@@ -1,1 +1,110 @@
-/* Add styles here */
+body {
+  background: linear-gradient(to right, #2c3e50, #4ca1af);
+  color: #fff;
+  font-family: 'Helvetica Neue', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.75" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.1"/></svg>');
+    opacity: 0.2;
+    z-index: -1;
+}
+
+main {
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 2.5rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+h1 {
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 2.5em;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+#numbers-container {
+  display: flex;
+  flex-direction: column; /* Stack rows vertically */
+  gap: 1rem; /* Space between rows */
+  margin: 2.5rem 0;
+}
+
+.number-row {
+  display: flex;
+  justify-content: center;
+  gap: 1.2rem; /* Space between numbers in a row */
+}
+
+.number {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: white;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  transform: scale(0);
+  animation: appear-animation 0.5s ease-out forwards, color-swirl 10s linear infinite;
+  background-size: 400% 400%;
+}
+
+.number.row-1 { background: linear-gradient(45deg, #ff005c, #ff5c9d, #ff005c); background-size: 400% 400%; }
+.number.row-2 { background: linear-gradient(45deg, #ff9a00, #ffc500, #ff9a00); background-size: 400% 400%; }
+.number.row-3 { background: linear-gradient(45deg, #34e89e, #07f49e, #34e89e); background-size: 400% 400%; }
+.number.row-4 { background: linear-gradient(45deg, #3498db, #2980b9, #3498db); background-size: 400% 400%; }
+.number.row-5 { background: linear-gradient(45deg, #9b59b6, #8e44ad, #9b59b6); background-size: 400% 400%; }
+
+@keyframes appear-animation {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes color-swirl {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+
+
+#generate-btn {
+  padding: 1rem 2rem;
+  border: none;
+  background: linear-gradient(to right, #ff416c, #ff4b2b);
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(255, 75, 43, 0.4);
+}
+
+#generate-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(255, 75, 43, 0.6);
+}
