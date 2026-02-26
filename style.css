@@ -1,6 +1,28 @@
+:root {
+  --bg-gradient: linear-gradient(to right, #fdfbfb, #ebedee);
+  --text-color: #333;
+  --main-bg: rgba(0, 0, 0, 0.05);
+  --main-border: rgba(0, 0, 0, 0.1);
+  --h1-color: #222;
+  --h1-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  --btn-bg: #4ca1af;
+  --btn-text: #fff;
+}
+
+body.dark-mode {
+  --bg-gradient: linear-gradient(to right, #2c3e50, #4ca1af);
+  --text-color: #fff;
+  --main-bg: rgba(255, 255, 255, 0.1);
+  --main-border: rgba(255, 255, 255, 0.2);
+  --h1-color: #ffffff;
+  --h1-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  --btn-bg: #fff;
+  --btn-text: #2c3e50;
+}
+
 body {
-  background: linear-gradient(to right, #2c3e50, #4ca1af);
-  color: #fff;
+  background: var(--bg-gradient);
+  color: var(--text-color);
   font-family: 'Helvetica Neue', sans-serif;
   display: flex;
   justify-content: center;
@@ -9,6 +31,7 @@ body {
   margin: 0;
   position: relative;
   overflow: hidden;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 body::before {
@@ -25,19 +48,53 @@ body::before {
 
 main {
   text-align: center;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--main-bg);
   padding: 2.5rem;
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--main-border);
+  transition: background-color 0.3s ease, border 0.3s ease;
 }
 
 h1 {
-  color: #ffffff;
+  color: var(--h1-color);
   font-weight: bold;
   font-size: 2.5em;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  text-shadow: var(--h1-shadow);
+  transition: color 0.3s ease;
+}
+
+#generate-btn {
+  background-color: var(--btn-bg);
+  color: var(--btn-text);
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  transition: transform 0.2s, background-color 0.3s, color 0.3s;
+}
+
+#generate-btn:active {
+  transform: scale(0.95);
+}
+
+#theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  border-radius: 20px;
+  border: none;
+  background: var(--main-bg);
+  color: var(--text-color);
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--main-border);
+  font-weight: bold;
 }
 
 #numbers-container {
