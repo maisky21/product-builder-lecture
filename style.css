@@ -3,7 +3,8 @@
     --container-bg: rgba(255, 255, 255, 0.9);
     --text-color: #4a148c;
     --header-text: #6a1b9a;
-    --rainbow-btn: linear-gradient(45deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);
+    --btn-bg: #9575cd; /* 은은한 보라색 */
+    --btn-hover: #7e57c2;
     --shadow: 0 10px 30px rgba(103, 58, 183, 0.2);
     --ball-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
     --capture-bg: linear-gradient(135deg, #f8f0fb 0%, #ffffff 100%);
@@ -14,6 +15,8 @@
     --container-bg: rgba(45, 27, 77, 0.9);
     --text-color: #e1bee7;
     --header-text: #f3e5f5;
+    --btn-bg: #673ab7;
+    --btn-hover: #5e35b1;
     --shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
     --capture-bg: linear-gradient(135deg, #3d2463 0%, #2d1b4d 100%);
 }
@@ -105,25 +108,23 @@ header h1 {
     font-size: 1.1rem;
     font-weight: bold;
     color: white;
-    background: var(--rainbow-btn);
-    background-size: 200% 200%;
+    background-color: var(--btn-bg);
     border: none;
     border-radius: 16px;
     cursor: pointer;
     transition: all 0.3s;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 12px rgba(103, 58, 183, 0.2);
     margin: 25px 0;
-    animation: rainbowShift 5s ease infinite;
-}
-
-@keyframes rainbowShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
 }
 
 #generate-btn:hover {
-    transform: scale(1.05);
+    background-color: var(--btn-hover);
+    transform: scale(1.02);
+    box-shadow: 0 6px 16px rgba(103, 58, 183, 0.3);
+}
+
+#generate-btn:active {
+    transform: scale(0.98);
 }
 
 #capture-area {
@@ -149,10 +150,10 @@ header h1 {
 .ball {
     width: 38px;
     height: 38px;
-    min-width: 38px; /* 가로 고정 */
-    min-height: 38px; /* 세로 고정 */
-    flex-shrink: 0; /* 찌그러짐 방지 핵심 */
-    aspect-ratio: 1 / 1; /* 정사각형 유지 */
+    min-width: 38px;
+    min-height: 38px;
+    flex-shrink: 0;
+    aspect-ratio: 1 / 1;
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -174,7 +175,7 @@ header h1 {
 #share-btn {
     width: 100%;
     padding: 14px;
-    background: #4CAF50;
+    background: #66bb6a;
     color: white;
     border: none;
     border-radius: 12px;
@@ -185,6 +186,11 @@ header h1 {
 }
 
 #share-btn.hidden { display: none; }
+
+#share-btn:hover {
+    background: #4caf50;
+    transform: scale(1.02);
+}
 
 .ball.yellow { background: linear-gradient(135deg, #ffd54f, #fbc02d); }
 .ball.blue { background: linear-gradient(135deg, #4fc3f7, #0288d1); }
