@@ -1,10 +1,9 @@
 :root {
     --bg-color: #f3e5f5;
-    --container-bg: #ffffff;
+    --container-bg: rgba(255, 255, 255, 0.9);
     --text-color: #4a148c;
     --header-text: #6a1b9a;
-    --btn-bg: linear-gradient(135deg, #9c27b0, #673ab7);
-    --btn-hover: linear-gradient(135deg, #ab47bc, #7e57c2);
+    --rainbow-btn: linear-gradient(45deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);
     --shadow: 0 10px 30px rgba(103, 58, 183, 0.2);
     --ball-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
     --capture-bg: linear-gradient(135deg, #f8f0fb 0%, #ffffff 100%);
@@ -12,13 +11,10 @@
 
 [data-theme="dark"] {
     --bg-color: #1a0b2e;
-    --container-bg: #2d1b4d;
+    --container-bg: rgba(45, 27, 77, 0.9);
     --text-color: #e1bee7;
     --header-text: #f3e5f5;
-    --btn-bg: linear-gradient(135deg, #7b1fa2, #311b92);
-    --btn-hover: linear-gradient(135deg, #8e24aa, #4527a0);
     --shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
-    --ball-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
     --capture-bg: linear-gradient(135deg, #3d2463 0%, #2d1b4d 100%);
 }
 
@@ -37,6 +33,31 @@ body {
     padding: 20px;
     min-height: 100vh;
     transition: background-color 0.5s, color 0.5s;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* 배경 아이콘 컨테이너 */
+#bg-icons {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.floating-icon {
+    position: absolute;
+    font-size: 2rem;
+    opacity: 0.15;
+    animation: float 15s linear infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(110vh) rotate(0deg); }
+    100% { transform: translateY(-10vh) rotate(360deg); }
 }
 
 .container {
@@ -49,6 +70,8 @@ body {
     display: flex;
     flex-direction: column;
     height: fit-content;
+    z-index: 10;
+    backdrop-filter: blur(10px);
 }
 
 header {
@@ -78,37 +101,36 @@ header h1 {
     transition: transform 0.3s;
 }
 
-[data-theme="dark"] #theme-toggle {
-    background: rgba(255, 255, 255, 0.1);
-}
-
-#theme-toggle:hover {
-    transform: rotate(20deg) scale(1.1);
-}
-
 #generate-btn {
     width: 100%;
     padding: 16px;
     font-size: 1.1rem;
     font-weight: bold;
     color: white;
-    background: var(--btn-bg);
+    background: var(--rainbow-btn);
+    background-size: 200% 200%;
     border: none;
     border-radius: 16px;
     cursor: pointer;
     transition: all 0.3s;
-    box-shadow: 0 6px 15px rgba(103, 58, 183, 0.3);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
     margin-bottom: 25px;
+    animation: rainbowShift 5s ease infinite;
+}
+
+@keyframes rainbowShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 #generate-btn:hover {
-    background: var(--btn-hover);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(103, 58, 183, 0.4);
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
 }
 
 #generate-btn:active {
-    transform: translateY(0);
+    transform: scale(0.98);
 }
 
 #capture-area {
@@ -121,24 +143,6 @@ header h1 {
     flex-direction: column;
     gap: 15px;
     text-align: center;
-    transition: background 0.5s;
-}
-
-.capture-header h3 {
-    font-size: 1.1rem;
-    margin-top: 5px;
-    color: var(--header-text);
-}
-
-.date-text {
-    font-size: 0.85rem;
-    opacity: 0.7;
-}
-
-#lotto-container {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
 }
 
 .lotto-row {
@@ -148,11 +152,6 @@ header h1 {
     padding: 10px;
     background: rgba(255, 255, 255, 0.3);
     border-radius: 12px;
-    backdrop-filter: blur(5px);
-}
-
-[data-theme="dark"] .lotto-row {
-    background: rgba(0, 0, 0, 0.2);
 }
 
 .ball {
@@ -167,19 +166,23 @@ header h1 {
     font-size: 0.95rem;
     box-shadow: var(--ball-shadow);
     opacity: 0;
-    transform: scale(0) rotate(-180deg);
+    transform: scale(0) translateY(20px);
     transition: opacity 0.4s, transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .ball.visible {
     opacity: 1;
-    transform: scale(1) rotate(0);
+    transform: scale(1) translateY(0);
 }
 
-.capture-footer {
-    font-size: 0.8rem;
-    opacity: 0.6;
-    margin-top: 10px;
+.ball.pop {
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+    0% { transform: scale(0.5); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
 }
 
 #share-btn {
@@ -195,33 +198,10 @@ header h1 {
     font-size: 1rem;
 }
 
-#share-btn.hidden {
-    display: none;
-}
+#share-btn.hidden { display: none; }
 
-#share-btn:hover {
-    background: #43a047;
-    filter: brightness(1.1);
-}
-
-/* 색상 테마 - 신비로운 파스텔 톤 */
 .ball.yellow { background: linear-gradient(135deg, #ffd54f, #fbc02d); }
 .ball.blue { background: linear-gradient(135deg, #4fc3f7, #0288d1); }
 .ball.red { background: linear-gradient(135deg, #ff8a65, #e64a19); }
 .ball.gray { background: linear-gradient(135deg, #bdbdbd, #616161); }
 .ball.green { background: linear-gradient(135deg, #aed581, #689f38); }
-
-/* 반응형 */
-@media (max-width: 480px) {
-    .container {
-        padding: 20px;
-    }
-    .ball {
-        width: 32px;
-        height: 32px;
-        font-size: 0.85rem;
-    }
-    .lotto-row {
-        gap: 5px;
-    }
-}

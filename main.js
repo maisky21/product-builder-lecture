@@ -5,15 +5,58 @@ document.addEventListener('DOMContentLoaded', () => {
     const lottoContainer = document.getElementById('lotto-container');
     const captureArea = document.getElementById('capture-area');
     const currentDateEl = document.getElementById('current-date');
+    const bgIconsContainer = document.getElementById('bg-icons');
 
     // --- 초기 설정 ---
     initTheme();
     setCurrentDate();
+    createFloatingIcons();
 
     // --- 이벤트 리스너 ---
     themeToggle.addEventListener('click', toggleTheme);
     generateBtn.addEventListener('click', generateLottoSets);
     shareBtn.addEventListener('click', captureAndShare);
+
+    // --- 배경 아이콘 생성 ---
+    function createFloatingIcons() {
+        const icons = ['🍀', '💰', '💎', '✨', '🪙'];
+        const count = 15;
+        
+        for (let i = 0; i < count; i++) {
+            const icon = document.createElement('span');
+            icon.className = 'floating-icon';
+            icon.textContent = icons[Math.floor(Math.random() * icons.length)];
+            icon.style.left = Math.random() * 100 + 'vw';
+            icon.style.animationDelay = Math.random() * 15 + 's';
+            icon.style.fontSize = (Math.random() * 1.5 + 1) + 'rem';
+            bgIconsContainer.appendChild(icon);
+        }
+    }
+
+    // --- 사운드 효과 (Web Audio API 사용 예시) ---
+    // 실제 파일을 연결하려면 new Audio('path/to/sound.mp3')를 사용하세요.
+    function playPopSound() {
+        try {
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(880, audioCtx.currentTime); // A5 note
+            oscillator.frequency.exponentialRampToValueAtTime(440, audioCtx.currentTime + 0.1);
+
+            gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            oscillator.start();
+            oscillator.stop(audioCtx.currentTime + 0.1);
+        } catch (e) {
+            console.log('Audio playback failed', e);
+        }
+    }
 
     // --- 날짜 설정 ---
     function setCurrentDate() {
@@ -26,18 +69,12 @@ document.addEventListener('DOMContentLoaded', () => {
     function initTheme() {
         const savedTheme = localStorage.getItem('theme');
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        
-        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-            setTheme('dark');
-        } else {
-            setTheme('light');
-        }
+        setTheme(savedTheme === 'dark' || (!savedTheme && prefersDark) ? 'dark' : 'light');
     }
 
     function toggleTheme() {
         const currentTheme = document.documentElement.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        setTheme(newTheme);
+        setTheme(currentTheme === 'dark' ? 'light' : 'dark');
     }
 
     function setTheme(theme) {
@@ -63,10 +100,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 const ball = createBall(numbers[i]);
                 row.appendChild(ball);
                 
-                await new Promise(resolve => setTimeout(resolve, 60));
+                // 요청하신 0.1초(100ms) 간격 시차
+                await new Promise(resolve => setTimeout(resolve, 100));
                 ball.classList.add('visible');
+                ball.classList.add('pop');
+                playPopSound(); // 번호가 나올 때 효과음
             }
-            await new Promise(resolve => setTimeout(resolve, 100));
+            await new Promise(resolve => setTimeout(resolve, 150));
         }
 
         generateBtn.disabled = false;
@@ -97,38 +137,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- 캡처 및 공유 함수 ---
     function captureAndShare() {
-        if (typeof html2canvas === 'undefined') {
-            alert('이미지 생성 라이브러리를 불러오는 중입니다. 잠시 후 다시 시도해주세요.');
-            return;
-        }
-
-        // 캡처 시 배경색이 테마에 맞게 나오도록 설정
         const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
         const bgColor = isDark ? '#2d1b4d' : '#ffffff';
 
         html2canvas(captureArea, {
             backgroundColor: bgColor,
-            scale: 2, // 고화질 캡처
-            logging: false,
+            scale: 2,
             useCORS: true
         }).then(canvas => {
             const image = canvas.toDataURL('image/png');
             const link = document.createElement('a');
             link.href = image;
-            link.download = `행운의번호_${new Date().getTime()}.png`;
+            link.download = `lucky_${new Date().getTime()}.png`;
             link.click();
-            
-            // 모바일 Share API 지원 시 (선택 사항)
-            if (navigator.share) {
-                canvas.toBlob(blob => {
-                    const file = new File([blob], 'lucky_numbers.png', { type: 'image/png' });
-                    navigator.share({
-                        files: [file],
-                        title: '오늘의 행운 번호',
-                        text: '오늘의 행운 번호를 확인해보세요! 🔮'
-                    }).catch(console.error);
-                });
-            }
         });
     }
 });
