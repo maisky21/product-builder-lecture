@@ -1,167 +1,197 @@
 :root {
-  --bg-gradient: linear-gradient(to right, #fdfbfb, #ebedee);
-  --text-color: #333;
-  --main-bg: rgba(0, 0, 0, 0.05);
-  --main-border: rgba(0, 0, 0, 0.1);
-  --h1-color: #222;
-  --h1-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  --btn-bg: #4ca1af;
-  --btn-text: #fff;
+    --bg-color: #f8f9fa;
+    --container-bg: #ffffff;
+    --text-color: #333333;
+    --header-text: #2c3e50;
+    --btn-bg: linear-gradient(135deg, #6e8efb, #a777e3);
+    --btn-hover: linear-gradient(135deg, #5a7dfa, #9666d2);
+    --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    --ball-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-body.dark-mode {
-  --bg-gradient: linear-gradient(to right, #2c3e50, #4ca1af);
-  --text-color: #fff;
-  --main-bg: rgba(255, 255, 255, 0.1);
-  --main-border: rgba(255, 255, 255, 0.2);
-  --h1-color: #ffffff;
-  --h1-shadow: 0 2px 10px rgba(0,0,0,0.3);
-  --btn-bg: #fff;
-  --btn-text: #2c3e50;
+[data-theme="dark"] {
+    --bg-color: #121212;
+    --container-bg: #1e1e1e;
+    --text-color: #e0e0e0;
+    --header-text: #ffffff;
+    --btn-bg: linear-gradient(135deg, #3a47d5, #00d2ff);
+    --btn-hover: linear-gradient(135deg, #2a37c5, #00c2ef);
+    --shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    --ball-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-  background: var(--bg-gradient);
-  color: var(--text-color);
-  font-family: 'Helvetica Neue', sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  margin: 0;
-  position: relative;
-  overflow: hidden;
-  transition: background 0.3s ease, color 0.3s ease;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    min-height: 100vh;
+    transition: background-color 0.3s, color 0.3s;
 }
 
-body::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
+.container {
     width: 100%;
-    height: 100%;
-    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.75" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.1"/></svg>');
-    opacity: 0.2;
-    z-index: -1;
+    max-width: 600px;
+    background: var(--container-bg);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
 }
 
-main {
-  text-align: center;
-  background-color: var(--main-bg);
-  padding: 2.5rem;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(10px);
-  border: 1px solid var(--main-border);
-  transition: background-color 0.3s ease, border 0.3s ease;
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
 }
 
-h1 {
-  color: var(--h1-color);
-  font-weight: bold;
-  font-size: 2.5em;
-  text-shadow: var(--h1-shadow);
-  transition: color 0.3s ease;
-}
-
-#generate-btn {
-  background-color: var(--btn-bg);
-  color: var(--btn-text);
-  border: none;
-  padding: 1rem 2rem;
-  font-size: 1.2rem;
-  font-weight: bold;
-  border-radius: 50px;
-  cursor: pointer;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-  transition: transform 0.2s, background-color 0.3s, color 0.3s;
-}
-
-#generate-btn:active {
-  transform: scale(0.95);
+header h1 {
+    font-size: 1.5rem;
+    color: var(--header-text);
 }
 
 #theme-toggle {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  padding: 10px 20px;
-  border-radius: 20px;
-  border: none;
-  background: var(--main-bg);
-  color: var(--text-color);
-  cursor: pointer;
-  backdrop-filter: blur(10px);
-  border: 1px solid var(--main-border);
-  font-weight: bold;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    transition: transform 0.2s;
 }
 
-#numbers-container {
-  display: flex;
-  flex-direction: column; /* Stack rows vertically */
-  gap: 1rem; /* Space between rows */
-  margin: 2.5rem 0;
+#theme-toggle:hover {
+    transform: scale(1.1);
 }
 
-.number-row {
-  display: flex;
-  justify-content: center;
-  gap: 1.2rem; /* Space between numbers in a row */
+.controls {
+    margin-bottom: 30px;
+    text-align: center;
 }
-
-.number {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: white;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-  border: 2px solid rgba(255, 255, 255, 0.5);
-  opacity: 0;
-  transform: scale(0);
-  animation: appear-animation 0.5s ease-out forwards, color-swirl 10s linear infinite;
-  background-size: 400% 400%;
-}
-
-.number.row-1 { background: linear-gradient(45deg, #ff005c, #ff5c9d, #ff005c); background-size: 400% 400%; }
-.number.row-2 { background: linear-gradient(45deg, #ff9a00, #ffc500, #ff9a00); background-size: 400% 400%; }
-.number.row-3 { background: linear-gradient(45deg, #34e89e, #07f49e, #34e89e); background-size: 400% 400%; }
-.number.row-4 { background: linear-gradient(45deg, #3498db, #2980b9, #3498db); background-size: 400% 400%; }
-.number.row-5 { background: linear-gradient(45deg, #9b59b6, #8e44ad, #9b59b6); background-size: 400% 400%; }
-
-@keyframes appear-animation {
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes color-swirl {
-    0%{background-position:0% 50%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 50%}
-}
-
 
 #generate-btn {
-  padding: 1rem 2rem;
-  border: none;
-  background: linear-gradient(to right, #ff416c, #ff4b2b);
-  color: white;
-  font-size: 1.2rem;
-  font-weight: bold;
-  border-radius: 50px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 5px 15px rgba(255, 75, 43, 0.4);
+    width: 100%;
+    padding: 15px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: white;
+    background: var(--btn-bg);
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.1s, box-shadow 0.2s;
+    box-shadow: 0 4px 10px rgba(110, 142, 251, 0.3);
 }
 
 #generate-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(255, 75, 43, 0.6);
+    background: var(--btn-hover);
+    box-shadow: 0 6px 15px rgba(110, 142, 251, 0.4);
+}
+
+#generate-btn:active {
+    transform: scale(0.98);
+}
+
+#lotto-container {
+    display: flex;
+    flex-direction: column-reverse; /* 최신 생성된 번호가 위로 오도록 */
+    gap: 15px;
+}
+
+.lotto-row {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.03);
+    border-radius: 15px;
+    animation: fadeIn 0.5s ease-out;
+}
+
+[data-theme="dark"] .lotto-row {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.ball {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    color: white;
+    font-size: 1.1rem;
+    box-shadow: var(--ball-shadow);
+    opacity: 0;
+    transform: scale(0);
+    transition: opacity 0.3s, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.ball.visible {
+    opacity: 1;
+    transform: scale(1);
+    animation: bounceInner 0.5s;
+}
+
+/* 색상 테마 */
+.ball.yellow { background-color: #fbc400; }
+.ball.blue { background-color: #69c8f2; }
+.ball.red { background-color: #ff7272; }
+.ball.gray { background-color: #aaa; }
+.ball.green { background-color: #b0d840; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes bounceInner {
+    0% { transform: scale(0); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+/* 반응형 설정 */
+@media (max-width: 600px) {
+    .container {
+        padding: 20px;
+    }
+    
+    header h1 {
+        font-size: 1.2rem;
+    }
+
+    .ball {
+        width: 35px;
+        height: 35px;
+        font-size: 0.9rem;
+    }
+    
+    .lotto-row {
+        gap: 5px;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 400px) {
+    .ball {
+        width: 30px;
+        height: 30px;
+        font-size: 0.8rem;
+    }
+    
+    .lotto-row {
+        gap: 4px;
+    }
 }

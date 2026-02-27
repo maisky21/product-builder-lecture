@@ -1,18 +1,26 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lotto Number Generator</title>
-  <link href='/style.css' rel='stylesheet'>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로또 번호 생성기</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <button id="theme-toggle">Dark Mode</button>
-  <main>
-    <h1>Lotto Number Generator</h1>
-    <div id="numbers-container"></div>
-    <button id="generate-btn">Generate Numbers</button>
-  </main>
-  <script defer type="text/javascript" src="/main.js"></script>
+    <div class="container">
+        <header>
+            <h1>🍀 행운의 로또 번호</h1>
+            <button id="theme-toggle" aria-label="테마 전환">🌙</button>
+        </header>
+        <main>
+            <div class="controls">
+                <button id="generate-btn">번호 생성하기</button>
+            </div>
+            <div id="lotto-container">
+                <!-- 생성된 번호가 여기에 추가됩니다 -->
+            </div>
+        </main>
+    </div>
+    <script src="main.js"></script>
 </body>
 </html>
