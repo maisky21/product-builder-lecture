@@ -3,24 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>로또 번호 생성기</title>
+    <title>오늘의 운세: 로또 번호 생성기</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🍀 행운의 로또 번호</h1>
+            <h1>🔮 오늘의 운세: 행운의 번호</h1>
             <button id="theme-toggle" aria-label="테마 전환">🌙</button>
         </header>
         <main>
             <div class="controls">
-                <button id="generate-btn">번호 생성하기</button>
+                <button id="generate-btn">오늘의 행운 확인하기</button>
             </div>
-            <div id="lotto-container">
-                <!-- 생성된 번호가 여기에 추가됩니다 -->
+            
+            <!-- 캡처될 영역 -->
+            <div id="capture-area">
+                <div class="capture-header">
+                    <span class="date-text" id="current-date"></span>
+                    <h3>✨ 나의 행운 번호 ✨</h3>
+                </div>
+                <div id="lotto-container">
+                    <!-- 생성된 번호가 여기에 추가됩니다 -->
+                </div>
+                <div class="capture-footer">
+                    <p>#로또 #행운 #오늘의운세</p>
+                </div>
             </div>
+
+            <button id="share-btn" class="hidden">내 행운 공유하기 (이미지 저장)</button>
         </main>
     </div>
+    <!-- html2canvas 라이브러리 추가 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="main.js"></script>
 </body>
 </html>

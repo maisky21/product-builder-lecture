@@ -1,23 +1,25 @@
 :root {
-    --bg-color: #f8f9fa;
+    --bg-color: #f3e5f5;
     --container-bg: #ffffff;
-    --text-color: #333333;
-    --header-text: #2c3e50;
-    --btn-bg: linear-gradient(135deg, #6e8efb, #a777e3);
-    --btn-hover: linear-gradient(135deg, #5a7dfa, #9666d2);
-    --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    --ball-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    --text-color: #4a148c;
+    --header-text: #6a1b9a;
+    --btn-bg: linear-gradient(135deg, #9c27b0, #673ab7);
+    --btn-hover: linear-gradient(135deg, #ab47bc, #7e57c2);
+    --shadow: 0 10px 30px rgba(103, 58, 183, 0.2);
+    --ball-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    --capture-bg: linear-gradient(135deg, #f8f0fb 0%, #ffffff 100%);
 }
 
 [data-theme="dark"] {
-    --bg-color: #121212;
-    --container-bg: #1e1e1e;
-    --text-color: #e0e0e0;
-    --header-text: #ffffff;
-    --btn-bg: linear-gradient(135deg, #3a47d5, #00d2ff);
-    --btn-hover: linear-gradient(135deg, #2a37c5, #00c2ef);
-    --shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-    --ball-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    --bg-color: #1a0b2e;
+    --container-bg: #2d1b4d;
+    --text-color: #e1bee7;
+    --header-text: #f3e5f5;
+    --btn-bg: linear-gradient(135deg, #7b1fa2, #311b92);
+    --btn-hover: linear-gradient(135deg, #8e24aa, #4527a0);
+    --shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+    --ball-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --capture-bg: linear-gradient(135deg, #3d2463 0%, #2d1b4d 100%);
 }
 
 * {
@@ -34,164 +36,192 @@ body {
     justify-content: center;
     padding: 20px;
     min-height: 100vh;
-    transition: background-color 0.3s, color 0.3s;
+    transition: background-color 0.5s, color 0.5s;
 }
 
 .container {
     width: 100%;
-    max-width: 600px;
+    max-width: 500px;
     background: var(--container-bg);
     padding: 30px;
-    border-radius: 20px;
+    border-radius: 24px;
     box-shadow: var(--shadow);
     display: flex;
     flex-direction: column;
+    height: fit-content;
 }
 
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
 }
 
 header h1 {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     color: var(--header-text);
+    font-weight: 800;
 }
 
 #theme-toggle {
-    background: none;
+    background: rgba(0, 0, 0, 0.05);
     border: none;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     cursor: pointer;
-    padding: 5px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    transition: transform 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s;
+}
+
+[data-theme="dark"] #theme-toggle {
+    background: rgba(255, 255, 255, 0.1);
 }
 
 #theme-toggle:hover {
-    transform: scale(1.1);
-}
-
-.controls {
-    margin-bottom: 30px;
-    text-align: center;
+    transform: rotate(20deg) scale(1.1);
 }
 
 #generate-btn {
     width: 100%;
-    padding: 15px;
-    font-size: 1.2rem;
+    padding: 16px;
+    font-size: 1.1rem;
     font-weight: bold;
     color: white;
     background: var(--btn-bg);
     border: none;
-    border-radius: 12px;
+    border-radius: 16px;
     cursor: pointer;
-    transition: background 0.3s, transform 0.1s, box-shadow 0.2s;
-    box-shadow: 0 4px 10px rgba(110, 142, 251, 0.3);
+    transition: all 0.3s;
+    box-shadow: 0 6px 15px rgba(103, 58, 183, 0.3);
+    margin-bottom: 25px;
 }
 
 #generate-btn:hover {
     background: var(--btn-hover);
-    box-shadow: 0 6px 15px rgba(110, 142, 251, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(103, 58, 183, 0.4);
 }
 
 #generate-btn:active {
-    transform: scale(0.98);
+    transform: translateY(0);
+}
+
+#capture-area {
+    padding: 25px;
+    background: var(--capture-bg);
+    border-radius: 20px;
+    border: 2px solid rgba(103, 58, 183, 0.1);
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+    transition: background 0.5s;
+}
+
+.capture-header h3 {
+    font-size: 1.1rem;
+    margin-top: 5px;
+    color: var(--header-text);
+}
+
+.date-text {
+    font-size: 0.85rem;
+    opacity: 0.7;
 }
 
 #lotto-container {
     display: flex;
-    flex-direction: column-reverse; /* 최신 생성된 번호가 위로 오도록 */
-    gap: 15px;
+    flex-direction: column;
+    gap: 12px;
 }
 
 .lotto-row {
     display: flex;
     justify-content: center;
-    gap: 10px;
-    padding: 15px;
-    background: rgba(0, 0, 0, 0.03);
-    border-radius: 15px;
-    animation: fadeIn 0.5s ease-out;
+    gap: 8px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    backdrop-filter: blur(5px);
 }
 
 [data-theme="dark"] .lotto-row {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(0, 0, 0, 0.2);
 }
 
 .ball {
-    width: 45px;
-    height: 45px;
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     font-weight: bold;
     color: white;
-    font-size: 1.1rem;
+    font-size: 0.95rem;
     box-shadow: var(--ball-shadow);
     opacity: 0;
-    transform: scale(0);
-    transition: opacity 0.3s, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform: scale(0) rotate(-180deg);
+    transition: opacity 0.4s, transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .ball.visible {
     opacity: 1;
-    transform: scale(1);
-    animation: bounceInner 0.5s;
+    transform: scale(1) rotate(0);
 }
 
-/* 색상 테마 */
-.ball.yellow { background-color: #fbc400; }
-.ball.blue { background-color: #69c8f2; }
-.ball.red { background-color: #ff7272; }
-.ball.gray { background-color: #aaa; }
-.ball.green { background-color: #b0d840; }
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+.capture-footer {
+    font-size: 0.8rem;
+    opacity: 0.6;
+    margin-top: 10px;
 }
 
-@keyframes bounceInner {
-    0% { transform: scale(0); }
-    50% { transform: scale(1.2); }
-    100% { transform: scale(1); }
+#share-btn {
+    width: 100%;
+    padding: 14px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 1rem;
 }
 
-/* 반응형 설정 */
-@media (max-width: 600px) {
+#share-btn.hidden {
+    display: none;
+}
+
+#share-btn:hover {
+    background: #43a047;
+    filter: brightness(1.1);
+}
+
+/* 색상 테마 - 신비로운 파스텔 톤 */
+.ball.yellow { background: linear-gradient(135deg, #ffd54f, #fbc02d); }
+.ball.blue { background: linear-gradient(135deg, #4fc3f7, #0288d1); }
+.ball.red { background: linear-gradient(135deg, #ff8a65, #e64a19); }
+.ball.gray { background: linear-gradient(135deg, #bdbdbd, #616161); }
+.ball.green { background: linear-gradient(135deg, #aed581, #689f38); }
+
+/* 반응형 */
+@media (max-width: 480px) {
     .container {
         padding: 20px;
     }
-    
-    header h1 {
-        font-size: 1.2rem;
-    }
-
     .ball {
-        width: 35px;
-        height: 35px;
-        font-size: 0.9rem;
+        width: 32px;
+        height: 32px;
+        font-size: 0.85rem;
     }
-    
     .lotto-row {
         gap: 5px;
-        padding: 10px;
-    }
-}
-
-@media (max-width: 400px) {
-    .ball {
-        width: 30px;
-        height: 30px;
-        font-size: 0.8rem;
-    }
-    
-    .lotto-row {
-        gap: 4px;
     }
 }

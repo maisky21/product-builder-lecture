@@ -1,14 +1,26 @@
 document.addEventListener('DOMContentLoaded', () => {
     const themeToggle = document.getElementById('theme-toggle');
     const generateBtn = document.getElementById('generate-btn');
+    const shareBtn = document.getElementById('share-btn');
     const lottoContainer = document.getElementById('lotto-container');
+    const captureArea = document.getElementById('capture-area');
+    const currentDateEl = document.getElementById('current-date');
 
     // --- 초기 설정 ---
     initTheme();
+    setCurrentDate();
 
     // --- 이벤트 리스너 ---
     themeToggle.addEventListener('click', toggleTheme);
-    generateBtn.addEventListener('click', generateLottoSet);
+    generateBtn.addEventListener('click', generateLottoSets);
+    shareBtn.addEventListener('click', captureAndShare);
+
+    // --- 날짜 설정 ---
+    function setCurrentDate() {
+        const now = new Date();
+        const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+        currentDateEl.textContent = now.toLocaleDateString('ko-KR', options);
+    }
 
     // --- 테마 관련 함수 ---
     function initTheme() {
@@ -35,33 +47,30 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- 로또 생성 관련 함수 ---
-    async function generateLottoSet() {
+    async function generateLottoSets() {
         generateBtn.disabled = true;
-        lottoContainer.innerHTML = ''; // 기존 번호 초기화 (선택 사항: 누를 때마다 새로 5세트)
+        shareBtn.classList.add('hidden');
+        lottoContainer.innerHTML = ''; 
 
         for (let rowIdx = 0; rowIdx < 5; rowIdx++) {
-            // 새로운 행 생성
             const row = document.createElement('div');
             row.classList.add('lotto-row');
-            lottoContainer.appendChild(row); // 5세트를 순서대로 아래로 추가
+            lottoContainer.appendChild(row);
 
             const numbers = generateUniqueNumbers();
             
-            // 각 행의 번호를 왼쪽에서 오른쪽으로 하나씩 생성 및 애니메이션
             for (let i = 0; i < numbers.length; i++) {
                 const ball = createBall(numbers[i]);
                 row.appendChild(ball);
                 
-                // 번호 간의 딜레이
-                await new Promise(resolve => setTimeout(resolve, 80));
+                await new Promise(resolve => setTimeout(resolve, 60));
                 ball.classList.add('visible');
             }
-            
-            // 행 간의 약간의 딜레이 (선택 사항)
-            await new Promise(resolve => setTimeout(resolve, 150));
+            await new Promise(resolve => setTimeout(resolve, 100));
         }
 
         generateBtn.disabled = false;
+        shareBtn.classList.remove('hidden');
     }
 
     function generateUniqueNumbers() {
@@ -77,7 +86,6 @@ document.addEventListener('DOMContentLoaded', () => {
         ball.classList.add('ball');
         ball.textContent = number;
         
-        // 숫자 범위에 따른 색상 지정
         if (number <= 10) ball.classList.add('yellow');
         else if (number <= 20) ball.classList.add('blue');
         else if (number <= 30) ball.classList.add('red');
@@ -85,5 +93,42 @@ document.addEventListener('DOMContentLoaded', () => {
         else ball.classList.add('green');
         
         return ball;
+    }
+
+    // --- 캡처 및 공유 함수 ---
+    function captureAndShare() {
+        if (typeof html2canvas === 'undefined') {
+            alert('이미지 생성 라이브러리를 불러오는 중입니다. 잠시 후 다시 시도해주세요.');
+            return;
+        }
+
+        // 캡처 시 배경색이 테마에 맞게 나오도록 설정
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        const bgColor = isDark ? '#2d1b4d' : '#ffffff';
+
+        html2canvas(captureArea, {
+            backgroundColor: bgColor,
+            scale: 2, // 고화질 캡처
+            logging: false,
+            useCORS: true
+        }).then(canvas => {
+            const image = canvas.toDataURL('image/png');
+            const link = document.createElement('a');
+            link.href = image;
+            link.download = `행운의번호_${new Date().getTime()}.png`;
+            link.click();
+            
+            // 모바일 Share API 지원 시 (선택 사항)
+            if (navigator.share) {
+                canvas.toBlob(blob => {
+                    const file = new File([blob], 'lucky_numbers.png', { type: 'image/png' });
+                    navigator.share({
+                        files: [file],
+                        title: '오늘의 행운 번호',
+                        text: '오늘의 행운 번호를 확인해보세요! 🔮'
+                    }).catch(console.error);
+                });
+            }
+        });
     }
 });
