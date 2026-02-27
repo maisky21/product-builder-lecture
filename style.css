@@ -37,7 +37,6 @@ body {
     position: relative;
 }
 
-/* 배경 아이콘 컨테이너 */
 #bg-icons {
     position: fixed;
     top: 0;
@@ -98,7 +97,6 @@ header h1 {
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: transform 0.3s;
 }
 
 #generate-btn {
@@ -114,7 +112,7 @@ header h1 {
     cursor: pointer;
     transition: all 0.3s;
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-    margin-bottom: 25px;
+    margin: 25px 0;
     animation: rainbowShift 5s ease infinite;
 }
 
@@ -126,11 +124,6 @@ header h1 {
 
 #generate-btn:hover {
     transform: scale(1.05);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-}
-
-#generate-btn:active {
-    transform: scale(0.98);
 }
 
 #capture-area {
@@ -138,7 +131,6 @@ header h1 {
     background: var(--capture-bg);
     border-radius: 20px;
     border: 2px solid rgba(103, 58, 183, 0.1);
-    margin-bottom: 25px;
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -157,6 +149,10 @@ header h1 {
 .ball {
     width: 38px;
     height: 38px;
+    min-width: 38px; /* 가로 고정 */
+    min-height: 38px; /* 세로 고정 */
+    flex-shrink: 0; /* 찌그러짐 방지 핵심 */
+    aspect-ratio: 1 / 1; /* 정사각형 유지 */
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -173,16 +169,6 @@ header h1 {
 .ball.visible {
     opacity: 1;
     transform: scale(1) translateY(0);
-}
-
-.ball.pop {
-    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-@keyframes popIn {
-    0% { transform: scale(0.5); }
-    50% { transform: scale(1.2); }
-    100% { transform: scale(1); }
 }
 
 #share-btn {
@@ -205,3 +191,13 @@ header h1 {
 .ball.red { background: linear-gradient(135deg, #ff8a65, #e64a19); }
 .ball.gray { background: linear-gradient(135deg, #bdbdbd, #616161); }
 .ball.green { background: linear-gradient(135deg, #aed581, #689f38); }
+
+@media (max-width: 480px) {
+    .ball {
+        width: 32px;
+        height: 32px;
+        min-width: 32px;
+        min-height: 32px;
+        font-size: 0.85rem;
+    }
+}
