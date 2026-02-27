@@ -3,11 +3,12 @@
     --container-bg: rgba(255, 255, 255, 0.9);
     --text-color: #4a148c;
     --header-text: #6a1b9a;
-    --btn-bg: #9575cd; /* 은은한 보라색 */
+    --btn-bg: #9575cd;
     --btn-hover: #7e57c2;
     --shadow: 0 10px 30px rgba(103, 58, 183, 0.2);
     --ball-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
     --capture-bg: linear-gradient(135deg, #f8f0fb 0%, #ffffff 100%);
+    --row-bg: rgba(255, 255, 255, 0.5); /* 라이트모드 행 배경 */
 }
 
 [data-theme="dark"] {
@@ -19,6 +20,7 @@
     --btn-hover: #5e35b1;
     --shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
     --capture-bg: linear-gradient(135deg, #3d2463 0%, #2d1b4d 100%);
+    --row-bg: rgba(255, 255, 255, 0.08); /* 다크모드 행 배경: 더 은은하게 */
 }
 
 * {
@@ -120,11 +122,6 @@ header h1 {
 #generate-btn:hover {
     background-color: var(--btn-hover);
     transform: scale(1.02);
-    box-shadow: 0 6px 16px rgba(103, 58, 183, 0.3);
-}
-
-#generate-btn:active {
-    transform: scale(0.98);
 }
 
 #capture-area {
@@ -143,8 +140,9 @@ header h1 {
     justify-content: center;
     gap: 8px;
     padding: 10px;
-    background: rgba(255, 255, 255, 0.3);
+    background: var(--row-bg);
     border-radius: 12px;
+    backdrop-filter: blur(4px);
 }
 
 .ball {
@@ -186,11 +184,6 @@ header h1 {
 }
 
 #share-btn.hidden { display: none; }
-
-#share-btn:hover {
-    background: #4caf50;
-    transform: scale(1.02);
-}
 
 .ball.yellow { background: linear-gradient(135deg, #ffd54f, #fbc02d); }
 .ball.blue { background: linear-gradient(135deg, #4fc3f7, #0288d1); }
