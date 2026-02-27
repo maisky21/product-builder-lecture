@@ -37,22 +37,28 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 로또 생성 관련 함수 ---
     async function generateLottoSet() {
         generateBtn.disabled = true;
-        
-        // 새로운 행 생성
-        const row = document.createElement('div');
-        row.classList.add('lotto-row');
-        lottoContainer.prepend(row); // 최신 세트가 위로 오도록 추가
+        lottoContainer.innerHTML = ''; // 기존 번호 초기화 (선택 사항: 누를 때마다 새로 5세트)
 
-        const numbers = generateUniqueNumbers();
-        
-        // 왼쪽에서 오른쪽으로 하나씩 생성 및 애니메이션
-        for (let i = 0; i < numbers.length; i++) {
-            const ball = createBall(numbers[i]);
-            row.appendChild(ball);
+        for (let rowIdx = 0; rowIdx < 5; rowIdx++) {
+            // 새로운 행 생성
+            const row = document.createElement('div');
+            row.classList.add('lotto-row');
+            lottoContainer.appendChild(row); // 5세트를 순서대로 아래로 추가
+
+            const numbers = generateUniqueNumbers();
             
-            // 약간의 딜레이 후 가시화 (애니메이션 유도)
+            // 각 행의 번호를 왼쪽에서 오른쪽으로 하나씩 생성 및 애니메이션
+            for (let i = 0; i < numbers.length; i++) {
+                const ball = createBall(numbers[i]);
+                row.appendChild(ball);
+                
+                // 번호 간의 딜레이
+                await new Promise(resolve => setTimeout(resolve, 80));
+                ball.classList.add('visible');
+            }
+            
+            // 행 간의 약간의 딜레이 (선택 사항)
             await new Promise(resolve => setTimeout(resolve, 150));
-            ball.classList.add('visible');
         }
 
         generateBtn.disabled = false;
