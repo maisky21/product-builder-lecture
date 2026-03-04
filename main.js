@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const fortuneText = document.getElementById('fortune-text');
 
     let audioCtx = null;
+    let silentNode = null;
 
     const fortunes = [
         "오늘은 금전운이 최고조입니다! 망설이지 마세요.",
@@ -32,7 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 이벤트 리스너 ---
     themeToggle.addEventListener('click', toggleTheme);
     generateBtn.addEventListener('click', () => {
-        initAudio(); // 클릭 즉시 오디오 활성화
+        initAudio(); 
+        startSilentLoop(); // iOS Safari 권한 유지를 위한 루프 시작
         generateLottoSets();
     });
     shareBtn.addEventListener('click', captureAndShare);
@@ -53,13 +55,30 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- 오디오 초기화 (모바일 대응) ---
+    // --- 오디오 초기화 ---
     function initAudio() {
         if (!audioCtx) {
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         }
         if (audioCtx.state === 'suspended') {
             audioCtx.resume();
+        }
+    }
+
+    function startSilentLoop() {
+        if (!audioCtx) return;
+        const buffer = audioCtx.createBuffer(1, 1, 22050);
+        silentNode = audioCtx.createBufferSource();
+        silentNode.buffer = buffer;
+        silentNode.loop = true;
+        silentNode.connect(audioCtx.destination);
+        silentNode.start();
+    }
+
+    function stopSilentLoop() {
+        if (silentNode) {
+            try { silentNode.stop(); } catch (e) {}
+            silentNode = null;
         }
     }
 
@@ -144,66 +163,63 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const allRowsBalls = [];
 
-        // 5개 세트 생성
-        for (let rowIdx = 0; rowIdx < 5; rowIdx++) {
-            const row = document.createElement('div');
-            row.classList.add('lotto-row');
-            lottoContainer.appendChild(row);
+        try {
+            for (let rowIdx = 0; rowIdx < 5; rowIdx++) {
+                const row = document.createElement('div');
+                row.classList.add('lotto-row');
+                lottoContainer.appendChild(row);
 
-            const targetNumbers = generateUniqueNumbers();
-            const balls = [];
+                const targetNumbers = generateUniqueNumbers();
+                const balls = [];
 
-            // 초기 공들 생성
-            for (let i = 0; i < 6; i++) {
-                const ball = createBall('?');
-                row.appendChild(ball);
-                balls.push(ball);
-                
-                await new Promise(resolve => setTimeout(resolve, 30));
-                ball.classList.add('visible');
-            }
-            allRowsBalls.push({ balls, targetNumbers });
-            await new Promise(resolve => setTimeout(resolve, 100));
-        }
-
-        // 각 행의 공마다 슬롯머신 효과 적용 (순차적으로)
-        for (let rowIdx = 0; rowIdx < allRowsBalls.length; rowIdx++) {
-            const { balls, targetNumbers } = allRowsBalls[rowIdx];
-            
-            for (let i = 0; i < balls.length; i++) {
-                const ball = balls[i];
-                ball.classList.add('spinning');
-                
-                // 0.6초간 돌아가기 (5개 세트이므로 속도 조절)
-                const startTime = Date.now();
-                while (Date.now() - startTime < 600) {
-                    ball.textContent = Math.floor(Math.random() * 45) + 1;
-                    await new Promise(resolve => setTimeout(resolve, 50));
+                for (let i = 0; i < 6; i++) {
+                    const ball = createBall('?');
+                    row.appendChild(ball);
+                    balls.push(ball);
+                    
+                    await new Promise(resolve => setTimeout(resolve, 30));
+                    ball.classList.add('visible');
                 }
-
-                // 멈춤
-                ball.classList.remove('spinning');
-                const finalNum = targetNumbers[i];
-                ball.textContent = finalNum;
-                applyBallColor(ball, finalNum);
-                ball.style.transform = 'scale(1.1)';
-                setTimeout(() => ball.style.transform = 'scale(1)', 200);
-                
-                playPopSound();
+                allRowsBalls.push({ balls, targetNumbers });
                 await new Promise(resolve => setTimeout(resolve, 100));
             }
-            
-            // 마지막 행 완료 시 효과
-            if (rowIdx === allRowsBalls.length - 1) {
-                triggerConfetti();
-                showFortune();
-                playFinalSound();
-            }
-            await new Promise(resolve => setTimeout(resolve, 200));
-        }
 
-        generateBtn.disabled = false;
-        shareBtn.classList.remove('hidden');
+            for (let rowIdx = 0; rowIdx < allRowsBalls.length; rowIdx++) {
+                const { balls, targetNumbers } = allRowsBalls[rowIdx];
+                
+                for (let i = 0; i < balls.length; i++) {
+                    const ball = balls[i];
+                    ball.classList.add('spinning');
+                    
+                    const startTime = Date.now();
+                    while (Date.now() - startTime < 600) {
+                        ball.textContent = Math.floor(Math.random() * 45) + 1;
+                        await new Promise(resolve => setTimeout(resolve, 50));
+                    }
+
+                    ball.classList.remove('spinning');
+                    const finalNum = targetNumbers[i];
+                    ball.textContent = finalNum;
+                    applyBallColor(ball, finalNum);
+                    ball.style.transform = 'scale(1.1)';
+                    setTimeout(() => ball.style.transform = 'scale(1)', 200);
+                    
+                    playPopSound();
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                }
+                
+                if (rowIdx === allRowsBalls.length - 1) {
+                    triggerConfetti();
+                    showFortune();
+                    playFinalSound();
+                }
+                await new Promise(resolve => setTimeout(resolve, 200));
+            }
+        } finally {
+            stopSilentLoop(); 
+            generateBtn.disabled = false;
+            shareBtn.classList.remove('hidden');
+        }
     }
 
     function generateUniqueNumbers() {
@@ -222,7 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function applyBallColor(ball, number) {
-        ball.className = 'ball visible'; // 초기화
+        ball.className = 'ball visible'; 
         const colorIdx = Math.min(8, Math.floor((number - 1) / 5));
         ball.classList.add(`c${colorIdx}`);
     }
@@ -259,7 +275,6 @@ document.addEventListener('DOMContentLoaded', () => {
         fortuneContainer.classList.remove('hidden');
     }
 
-    // --- 캡처 및 공유 함수 ---
     function captureAndShare() {
         const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
         const bgColor = isDark ? '#2d1b4d' : '#ffffff';
