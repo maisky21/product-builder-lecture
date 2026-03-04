@@ -6,6 +6,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const captureArea = document.getElementById('capture-area');
     const currentDateEl = document.getElementById('current-date');
     const bgIconsContainer = document.getElementById('bg-icons');
+    const fortuneContainer = document.getElementById('fortune-container');
+    const fortuneText = document.getElementById('fortune-text');
+
+    const fortunes = [
+        "오늘은 금전운이 최고조입니다! 망설이지 마세요.",
+        "예상치 못한 곳에서 행운이 찾아올 것입니다.",
+        "작은 인연이 큰 복으로 돌아오는 하루입니다.",
+        "스스로를 믿는 마음이 곧 최고의 행운입니다.",
+        "긍정적인 생각이 황금빛 미래를 만듭니다.",
+        "오늘 당신의 직감은 완벽합니다. 그대로 믿으세요!",
+        "하늘이 당신의 편을 들어주는 날입니다.",
+        "포기하지 않았던 일에서 결실을 맺게 됩니다.",
+        "주변 사람과 행운을 나누면 복이 배가 됩니다.",
+        "빛나는 보석처럼 당신의 하루도 반짝일 거예요."
+    ];
 
     // --- 초기 설정 ---
     initTheme();
@@ -33,8 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- 사운드 효과 (Web Audio API 사용 예시) ---
-    // 실제 파일을 연결하려면 new Audio('path/to/sound.mp3')를 사용하세요.
+    // --- 사운드 효과 ---
     function playPopSound() {
         try {
             const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -42,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const gainNode = audioCtx.createGain();
 
             oscillator.type = 'sine';
-            oscillator.frequency.setValueAtTime(880, audioCtx.currentTime); // A5 note
+            oscillator.frequency.setValueAtTime(880, audioCtx.currentTime);
             oscillator.frequency.exponentialRampToValueAtTime(440, audioCtx.currentTime + 0.1);
 
             gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
@@ -53,6 +67,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
             oscillator.start();
             oscillator.stop(audioCtx.currentTime + 0.1);
+        } catch (e) {
+            console.log('Audio playback failed', e);
+        }
+    }
+
+    function playFinalSound() {
+        try {
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+
+            oscillator.type = 'triangle';
+            oscillator.frequency.setValueAtTime(440, audioCtx.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.5);
+
+            gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            oscillator.start();
+            oscillator.stop(audioCtx.currentTime + 0.5);
         } catch (e) {
             console.log('Audio playback failed', e);
         }
@@ -87,26 +124,57 @@ document.addEventListener('DOMContentLoaded', () => {
     async function generateLottoSets() {
         generateBtn.disabled = true;
         shareBtn.classList.add('hidden');
+        fortuneContainer.classList.add('hidden');
         lottoContainer.innerHTML = ''; 
 
-        for (let rowIdx = 0; rowIdx < 5; rowIdx++) {
-            const row = document.createElement('div');
-            row.classList.add('lotto-row');
-            lottoContainer.appendChild(row);
+        // 1개 세트만 생성 (화려한 효과를 위해)
+        const row = document.createElement('div');
+        row.classList.add('lotto-row');
+        lottoContainer.appendChild(row);
 
-            const numbers = generateUniqueNumbers();
+        const targetNumbers = generateUniqueNumbers();
+        const balls = [];
+
+        // 초기 공들 생성 (물음표 또는 0으로 시작)
+        for (let i = 0; i < 6; i++) {
+            const ball = createBall('?');
+            row.appendChild(ball);
+            balls.push(ball);
             
-            for (let i = 0; i < numbers.length; i++) {
-                const ball = createBall(numbers[i]);
-                row.appendChild(ball);
-                
-                // 요청하신 0.1초(100ms) 간격 시차
-                await new Promise(resolve => setTimeout(resolve, 100));
-                ball.classList.add('visible');
-                ball.classList.add('pop');
-                playPopSound(); // 번호가 나올 때 효과음
+            await new Promise(resolve => setTimeout(resolve, 50));
+            ball.classList.add('visible');
+        }
+
+        // 각 공마다 슬롯머신 효과 적용
+        for (let i = 0; i < balls.length; i++) {
+            const ball = balls[i];
+            ball.classList.add('spinning');
+            
+            // 1초간 돌아가기
+            const startTime = Date.now();
+            while (Date.now() - startTime < 1000) {
+                ball.textContent = Math.floor(Math.random() * 45) + 1;
+                await new Promise(resolve => setTimeout(resolve, 50));
             }
-            await new Promise(resolve => setTimeout(resolve, 150));
+
+            // 멈춤
+            ball.classList.remove('spinning');
+            const finalNum = targetNumbers[i];
+            ball.textContent = finalNum;
+            applyBallColor(ball, finalNum);
+            ball.style.transform = 'scale(1.2)';
+            setTimeout(() => ball.style.transform = 'scale(1)', 200);
+            
+            playPopSound();
+            
+            // 마지막 번호일 경우 금색 폭죽
+            if (i === balls.length - 1) {
+                triggerConfetti();
+                showFortune();
+                playFinalSound();
+            }
+            
+            await new Promise(resolve => setTimeout(resolve, 300));
         }
 
         generateBtn.disabled = false;
@@ -121,18 +189,53 @@ document.addEventListener('DOMContentLoaded', () => {
         return Array.from(numbers).sort((a, b) => a - b);
     }
 
-    function createBall(number) {
+    function createBall(text) {
         const ball = document.createElement('div');
         ball.classList.add('ball');
-        ball.textContent = number;
-        
+        ball.textContent = text;
+        ball.style.background = 'linear-gradient(135deg, #e0e0e0, #bdbdbd)';
+        return ball;
+    }
+
+    function applyBallColor(ball, number) {
+        ball.className = 'ball visible'; // 초기화
         if (number <= 10) ball.classList.add('yellow');
         else if (number <= 20) ball.classList.add('blue');
         else if (number <= 30) ball.classList.add('red');
         else if (number <= 40) ball.classList.add('gray');
         else ball.classList.add('green');
-        
-        return ball;
+    }
+
+    function triggerConfetti() {
+        const duration = 3 * 1000;
+        const end = Date.now() + duration;
+
+        (function frame() {
+            confetti({
+                particleCount: 7,
+                angle: 60,
+                spread: 55,
+                origin: { x: 0 },
+                colors: ['#FFD700', '#FFA500', '#FF8C00']
+            });
+            confetti({
+                particleCount: 7,
+                angle: 120,
+                spread: 55,
+                origin: { x: 1 },
+                colors: ['#FFD700', '#FFA500', '#FF8C00']
+            });
+
+            if (Date.now() < end) {
+                requestAnimationFrame(frame);
+            }
+        }());
+    }
+
+    function showFortune() {
+        const randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
+        fortuneText.textContent = `🍀 행운의 조언: ${randomFortune}`;
+        fortuneContainer.classList.remove('hidden');
     }
 
     // --- 캡처 및 공유 함수 ---
