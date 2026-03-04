@@ -1,21 +1,21 @@
 :root {
-    --bg-color: #f8f0fb;
-    --container-bg: rgba(255, 255, 255, 0.95);
+    --bg-color: #fcf8ff;
+    --container-bg: rgba(255, 255, 255, 0.9);
     --text-color: #2d1b4d;
     --header-text: #4a148c;
-    --shadow: 0 20px 40px rgba(74, 20, 140, 0.1);
-    --capture-bg: linear-gradient(135deg, #ffffff 0%, #f3e5f5 100%);
-    --row-bg: rgba(255, 255, 255, 0.6);
+    --shadow: 0 20px 60px rgba(74, 20, 140, 0.15);
+    --capture-bg: linear-gradient(135deg, #ffffff 0%, #f8f0fb 100%);
+    --row-bg: rgba(255, 255, 255, 0.5);
 }
 
 [data-theme="dark"] {
-    --bg-color: #0f051d;
-    --container-bg: rgba(30, 15, 50, 0.9);
+    --bg-color: #0a041a;
+    --container-bg: rgba(25, 10, 45, 0.85);
     --text-color: #e1bee7;
     --header-text: #f3e5f5;
-    --shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
-    --capture-bg: linear-gradient(135deg, #1a0b2e 0%, #2d1b4d 100%);
-    --row-bg: rgba(255, 255, 255, 0.05);
+    --shadow: 0 20px 80px rgba(0, 0, 0, 0.9);
+    --capture-bg: linear-gradient(135deg, #120626 0%, #1a0b2e 100%);
+    --row-bg: rgba(255, 255, 255, 0.03);
 }
 
 * {
@@ -27,13 +27,14 @@
 body {
     background-color: var(--bg-color);
     color: var(--text-color);
-    font-family: 'Pretendard', system-ui, sans-serif;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
     display: flex;
-    justify-content: center;
-    padding: 20px;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 20px 60px; /* 하단 여백 충분히 확보 */
     min-height: 100vh;
-    transition: all 0.5s;
-    overflow-x: hidden;
+    transition: background-color 0.5s;
+    overflow-y: auto; /* 내용이 길어지면 스크롤 */
 }
 
 #bg-icons {
@@ -43,7 +44,7 @@ body {
 }
 
 .floating-icon {
-    position: absolute; font-size: 2rem; opacity: 0.1;
+    position: absolute; font-size: 2rem; opacity: 0.08;
     animation: float 15s linear infinite;
 }
 
@@ -60,14 +61,15 @@ body {
     border-radius: 32px;
     box-shadow: var(--shadow);
     z-index: 10;
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(25px);
+    height: fit-content; /* 내용에 맞게 늘어남 */
 }
 
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
 }
 
 #theme-toggle {
@@ -94,6 +96,16 @@ header {
 
 #generate-btn:disabled { opacity: 0.6; animation: none; }
 
+#capture-area {
+    padding: 25px; background: var(--capture-bg); border-radius: 24px;
+    display: flex; flex-direction: column; gap: 15px; text-align: center;
+}
+
+.lotto-row {
+    display: flex; justify-content: center; gap: 8px; padding: 10px;
+    background: var(--row-bg); border-radius: 16px;
+}
+
 .ball {
     width: 42px; height: 42px;
     border-radius: 50%;
@@ -101,83 +113,65 @@ header {
     font-weight: 900; color: white; font-size: 1.1rem;
     opacity: 0; transform: scale(0);
     transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    border: none !important; /* 외곽선 완전 제거 */
+    border: none !important; /* 선 완전 제거 */
     position: relative;
-    /* 공통 구체 광택 효과 */
+    /* 상단 광택 효과 */
     background-image: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.4) 0%, transparent 60%);
 }
 
-/* 라이트모드 그림자 */
-.ball { box-shadow: 0 6px 12px rgba(0,0,0,0.15), inset 0 -4px 8px rgba(0,0,0,0.1); }
+/* 라이트모드 부드러운 그림자 */
+.ball { box-shadow: 0 6px 12px rgba(0,0,0,0.1), inset 0 -3px 6px rgba(0,0,0,0.1); }
 
-/* 다크모드 글로우 */
+/* 다크모드 미세 글로우 */
 [data-theme="dark"] .ball {
-    box-shadow: 0 0 15px rgba(255,255,255,0.1), inset 0 -4px 8px rgba(0,0,0,0.3);
-    filter: drop-shadow(0 0 5px var(--glow-color, rgba(255,255,255,0.2)));
+    box-shadow: 0 0 15px var(--glow-color, rgba(255,255,255,0.1)), inset 0 -4px 8px rgba(0,0,0,0.3);
+    filter: drop-shadow(0 0 3px var(--glow-color, rgba(255,255,255,0.1)));
 }
 
 .ball.visible { opacity: 1; transform: scale(1); }
 
-/* Shining 애니메이션 */
+/* Shining 애니메이션 (별빛 효과) */
 .ball.shining::after {
-    content: '';
+    content: '✦';
     position: absolute;
-    top: -50%; left: -50%; width: 200%; height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, transparent 60%);
-    z-index: 2;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2.5rem;
+    color: white;
+    opacity: 0;
     pointer-events: none;
-    animation: star-shine 0.8s ease-out forwards;
+    animation: shining-star 0.8s ease-out forwards;
+    text-shadow: 0 0 10px white, 0 0 20px white;
 }
 
-@keyframes star-shine {
-    0% { transform: scale(0); opacity: 0; }
+@keyframes shining-star {
+    0% { transform: translate(-50%, -50%) scale(0) rotate(0deg); opacity: 0; }
     50% { opacity: 1; }
-    100% { transform: scale(1.5); opacity: 0; }
+    100% { transform: translate(-50%, -50%) scale(1.5) rotate(90deg); opacity: 0; }
 }
 
-/* 9단계 네온 캔디 색상 및 글로우 컬러 지정 */
-.ball.c0 { background-color: #FFD700; --glow-color: rgba(255, 215, 0, 0.6); color: #4a148c; }
-.ball.c1 { background-color: #FF6A88; --glow-color: rgba(255, 106, 136, 0.6); }
-.ball.c2 { background-color: #A18CD1; --glow-color: rgba(161, 140, 209, 0.6); }
-.ball.c3 { background-color: #48c6ef; --glow-color: rgba(72, 198, 239, 0.6); }
-.ball.c4 { background-color: #f093fb; --glow-color: rgba(240, 147, 251, 0.6); }
-.ball.c5 { background-color: #5ee7df; --glow-color: rgba(94, 231, 223, 0.6); color: #004d40; }
-.ball.c6 { background-color: #66a6ff; --glow-color: rgba(102, 166, 255, 0.6); }
-.ball.c7 { background-color: #f6d365; --glow-color: rgba(246, 211, 101, 0.6); color: #ad1457; }
-.ball.c8 { background-color: #8ec5fc; --glow-color: rgba(142, 197, 252, 0.6); color: #1a237e; }
-
-#capture-area {
-    padding: 30px; background: var(--capture-bg); border-radius: 24px;
-    display: flex; flex-direction: column; gap: 20px; text-align: center;
-}
-
-.lotto-row {
-    display: flex; justify-content: center; gap: 10px; padding: 12px;
-    background: var(--row-bg); border-radius: 16px;
-}
+/* 9단계 프리미엄 색상 및 글로우 설정 */
+.ball.c0 { background-color: #FFD700; --glow-color: rgba(255, 215, 0, 0.5); color: #4a148c; }
+.ball.c1 { background-color: #FF6A88; --glow-color: rgba(255, 106, 136, 0.5); }
+.ball.c2 { background-color: #A18CD1; --glow-color: rgba(161, 140, 209, 0.5); }
+.ball.c3 { background-color: #48c6ef; --glow-color: rgba(72, 198, 239, 0.5); }
+.ball.c4 { background-color: #f093fb; --glow-color: rgba(240, 147, 251, 0.5); }
+.ball.c5 { background-color: #5ee7df; --glow-color: rgba(94, 231, 223, 0.5); color: #004d40; }
+.ball.c6 { background-color: #66a6ff; --glow-color: rgba(102, 166, 255, 0.5); }
+.ball.c7 { background-color: #f6d365; --glow-color: rgba(246, 211, 101, 0.5); color: #ad1457; }
+.ball.c8 { background-color: #cfd8dc; --glow-color: rgba(207, 216, 220, 0.5); color: #37474f; }
 
 #fortune-container {
-    margin-top: 25px;
-    padding: 18px;
-    border-radius: 20px;
-    background: rgba(255, 249, 196, 0.4); /* 라이트모드: 연한 레몬색 */
-    border: 1.5px solid rgba(255, 215, 0, 0.3);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    margin-top: 20px; padding: 18px; border-radius: 20px;
+    background: rgba(255, 249, 196, 0.4); border: 1px solid rgba(255, 215, 0, 0.3);
     animation: slideUp 0.6s ease-out forwards;
 }
 
 [data-theme="dark"] #fortune-container {
-    background: rgba(106, 27, 154, 0.15); /* 다크모드: 은은한 보라색 */
-    border: 1.5px solid rgba(225, 190, 231, 0.2);
+    background: rgba(106, 27, 154, 0.12); border: 1px solid rgba(225, 190, 231, 0.15);
 }
 
-#fortune-text {
-    font-weight: 700;
-    font-size: 1.05rem;
-    color: var(--header-text);
-    line-height: 1.6;
-    word-break: keep-all;
-}
+#fortune-text { font-weight: 700; font-size: 1.05rem; color: var(--header-text); line-height: 1.6; }
 
 @keyframes slideUp {
     from { opacity: 0; transform: translateY(15px); }
@@ -186,23 +180,18 @@ header {
 
 #share-btn {
     display: flex; align-items: center; justify-content: center;
-    margin: 10px auto 20px; padding: 12px 30px;
+    margin: 15px auto 0; padding: 12px 30px;
     background: linear-gradient(135deg, #66bb6a 0%, #43a047 100%);
     color: white; border: none; border-radius: 50px;
     font-weight: 700; cursor: pointer; transition: all 0.3s;
     box-shadow: 0 10px 20px rgba(76, 175, 80, 0.2);
+    width: fit-content;
 }
 
+#share-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(76, 175, 80, 0.3); }
+
 @media (max-width: 480px) {
-    .ball { 
-        width: 40px; 
-        height: 40px; 
-        min-width: 40px;
-        min-height: 40px;
-        font-size: 1.05rem; 
-        flex-shrink: 0;
-        aspect-ratio: 1 / 1;
-    }
+    .ball { width: 40px; height: 40px; min-width: 40px; min-height: 40px; font-size: 1.05rem; aspect-ratio: 1/1; flex-shrink: 0;}
     .container { padding: 20px; }
     .lotto-row { gap: 6px; padding: 8px; }
 }

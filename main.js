@@ -181,7 +181,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     ball.classList.remove('spinning');
                     ball.textContent = targetNumbers[i];
                     applyBallColor(ball, targetNumbers[i]);
-                    ball.classList.add('shining'); 
+                    
+                    // 반짝임 효과 트리거
+                    ball.classList.remove('shining');
+                    void ball.offsetWidth; // 리플로우 강제
+                    ball.classList.add('shining');
+                    
                     playPopSound();
                     await new Promise(resolve => setTimeout(resolve, 100));
                 }
@@ -233,7 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function captureAndShare() {
         const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-        html2canvas(captureArea, { backgroundColor: isDark ? '#1a0b2e' : '#ffffff', scale: 2, useCORS: true })
+        html2canvas(captureArea, { backgroundColor: isDark ? '#0a041a' : '#ffffff', scale: 2, useCORS: true })
         .then(canvas => {
             const link = document.createElement('a');
             link.href = canvas.toDataURL('image/png');
