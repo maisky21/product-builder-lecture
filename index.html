@@ -12,24 +12,21 @@
 
     <div class="container">
         <header>
-            <h1 style="font-size: 1.2rem; white-space: nowrap; font-weight: 800;">🔮 오늘의 운세: 행운의 번호</h1>
+            <h1>🔮 오늘의 운세: 행운의 번호</h1>
             <button id="theme-toggle" aria-label="테마 전환">🌙</button>
         </header>
         <main>
             <!-- 캡처될 영역 -->
             <div id="capture-area">
                 <div class="capture-header">
-                    <span class="date-text" id="current-date"></span>
-                    <h3>✨ 나의 행운 번호 ✨</h3>
+                    <span class="date-text" id="current-date" style="font-size: 0.9rem; opacity: 0.7;"></span>
+                    <h2 style="margin-top: 10px; font-weight: 800; font-size: 1.4rem;">✨ 나의 행운 번호 ✨</h2>
                 </div>
                 <div id="lotto-container">
                     <!-- 생성된 번호가 여기에 추가됩니다 -->
                 </div>
                 <div id="fortune-container" class="hidden">
                     <p id="fortune-text"></p>
-                </div>
-                <div class="capture-footer">
-                    <!-- 해시태그 삭제됨 -->
                 </div>
             </div>
 
@@ -40,6 +37,8 @@
             <button id="share-btn" class="hidden">📸 내 행운 공유하기 (이미지 저장)</button>
         </main>
     </div>
+
+    <!-- 외부 라이브러리 -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="main.js"></script>
