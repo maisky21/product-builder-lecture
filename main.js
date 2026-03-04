@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const fortuneContainer = document.getElementById('fortune-container');
     const fortuneText = document.getElementById('fortune-text');
 
+    let audioCtx = null;
+
     const fortunes = [
         "오늘은 금전운이 최고조입니다! 망설이지 마세요.",
         "예상치 못한 곳에서 행운이 찾아올 것입니다.",
@@ -29,7 +31,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- 이벤트 리스너 ---
     themeToggle.addEventListener('click', toggleTheme);
-    generateBtn.addEventListener('click', generateLottoSets);
+    generateBtn.addEventListener('click', () => {
+        initAudio(); // 클릭 즉시 오디오 활성화
+        generateLottoSets();
+    });
     shareBtn.addEventListener('click', captureAndShare);
 
     // --- 배경 아이콘 생성 ---
@@ -48,10 +53,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // --- 오디오 초기화 (모바일 대응) ---
+    function initAudio() {
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+    }
+
     // --- 사운드 효과 ---
     function playPopSound() {
+        if (!audioCtx) return;
         try {
-            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             const oscillator = audioCtx.createOscillator();
             const gainNode = audioCtx.createGain();
 
@@ -73,8 +88,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function playFinalSound() {
+        if (!audioCtx) return;
         try {
-            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             const oscillator = audioCtx.createOscillator();
             const gainNode = audioCtx.createGain();
 
@@ -203,7 +218,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const ball = document.createElement('div');
         ball.classList.add('ball');
         ball.textContent = text;
-        // 인라인 스타일 배경 제거 (CSS 클래스가 적용되도록 함)
         return ball;
     }
 
