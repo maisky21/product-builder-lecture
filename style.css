@@ -239,11 +239,11 @@ header h1 {
 
 #share-btn.hidden { display: none; }
 
-.ball.yellow { background: linear-gradient(135deg, #ffd54f, #fbc02d); }
-.ball.blue { background: linear-gradient(135deg, #4fc3f7, #0288d1); }
-.ball.red { background: linear-gradient(135deg, #ff8a65, #e64a19); }
-.ball.gray { background: linear-gradient(135deg, #bdbdbd, #616161); }
-.ball.green { background: linear-gradient(135deg, #aed581, #689f38); }
+.ball.yellow { background: linear-gradient(135deg, #fff9c4, #fbc02d); color: #7f6d00; }
+.ball.blue { background: linear-gradient(135deg, #e1f5fe, #0288d1); color: #ffffff; }
+.ball.red { background: linear-gradient(135deg, #ffecb3, #e64a19); color: #ffffff; }
+.ball.gray { background: linear-gradient(135deg, #f5f5f5, #616161); color: #ffffff; }
+.ball.green { background: linear-gradient(135deg, #f1f8e9, #689f38); color: #ffffff; }
 
 @media (max-width: 480px) {
     .ball {

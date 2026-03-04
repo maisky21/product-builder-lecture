@@ -127,54 +127,64 @@ document.addEventListener('DOMContentLoaded', () => {
         fortuneContainer.classList.add('hidden');
         lottoContainer.innerHTML = ''; 
 
-        // 1개 세트만 생성 (화려한 효과를 위해)
-        const row = document.createElement('div');
-        row.classList.add('lotto-row');
-        lottoContainer.appendChild(row);
+        const allRowsBalls = [];
 
-        const targetNumbers = generateUniqueNumbers();
-        const balls = [];
+        // 5개 세트 생성
+        for (let rowIdx = 0; rowIdx < 5; rowIdx++) {
+            const row = document.createElement('div');
+            row.classList.add('lotto-row');
+            lottoContainer.appendChild(row);
 
-        // 초기 공들 생성 (물음표 또는 0으로 시작)
-        for (let i = 0; i < 6; i++) {
-            const ball = createBall('?');
-            row.appendChild(ball);
-            balls.push(ball);
-            
-            await new Promise(resolve => setTimeout(resolve, 50));
-            ball.classList.add('visible');
+            const targetNumbers = generateUniqueNumbers();
+            const balls = [];
+
+            // 초기 공들 생성
+            for (let i = 0; i < 6; i++) {
+                const ball = createBall('?');
+                row.appendChild(ball);
+                balls.push(ball);
+                
+                await new Promise(resolve => setTimeout(resolve, 30));
+                ball.classList.add('visible');
+            }
+            allRowsBalls.push({ balls, targetNumbers });
+            await new Promise(resolve => setTimeout(resolve, 100));
         }
 
-        // 각 공마다 슬롯머신 효과 적용
-        for (let i = 0; i < balls.length; i++) {
-            const ball = balls[i];
-            ball.classList.add('spinning');
+        // 각 행의 공마다 슬롯머신 효과 적용 (순차적으로)
+        for (let rowIdx = 0; rowIdx < allRowsBalls.length; rowIdx++) {
+            const { balls, targetNumbers } = allRowsBalls[rowIdx];
             
-            // 1초간 돌아가기
-            const startTime = Date.now();
-            while (Date.now() - startTime < 1000) {
-                ball.textContent = Math.floor(Math.random() * 45) + 1;
-                await new Promise(resolve => setTimeout(resolve, 50));
-            }
+            for (let i = 0; i < balls.length; i++) {
+                const ball = balls[i];
+                ball.classList.add('spinning');
+                
+                // 0.6초간 돌아가기 (5개 세트이므로 속도 조절)
+                const startTime = Date.now();
+                while (Date.now() - startTime < 600) {
+                    ball.textContent = Math.floor(Math.random() * 45) + 1;
+                    await new Promise(resolve => setTimeout(resolve, 50));
+                }
 
-            // 멈춤
-            ball.classList.remove('spinning');
-            const finalNum = targetNumbers[i];
-            ball.textContent = finalNum;
-            applyBallColor(ball, finalNum);
-            ball.style.transform = 'scale(1.2)';
-            setTimeout(() => ball.style.transform = 'scale(1)', 200);
+                // 멈춤
+                ball.classList.remove('spinning');
+                const finalNum = targetNumbers[i];
+                ball.textContent = finalNum;
+                applyBallColor(ball, finalNum);
+                ball.style.transform = 'scale(1.1)';
+                setTimeout(() => ball.style.transform = 'scale(1)', 200);
+                
+                playPopSound();
+                await new Promise(resolve => setTimeout(resolve, 100));
+            }
             
-            playPopSound();
-            
-            // 마지막 번호일 경우 금색 폭죽
-            if (i === balls.length - 1) {
+            // 마지막 행 완료 시 효과
+            if (rowIdx === allRowsBalls.length - 1) {
                 triggerConfetti();
                 showFortune();
                 playFinalSound();
             }
-            
-            await new Promise(resolve => setTimeout(resolve, 300));
+            await new Promise(resolve => setTimeout(resolve, 200));
         }
 
         generateBtn.disabled = false;
