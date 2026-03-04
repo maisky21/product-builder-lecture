@@ -194,6 +194,15 @@ header {
 }
 
 @media (max-width: 480px) {
-    .ball { width: 38px; height: 42px; font-size: 1rem; }
+    .ball { 
+        width: 40px; 
+        height: 40px; 
+        min-width: 40px;
+        min-height: 40px;
+        font-size: 1.05rem; 
+        flex-shrink: 0;
+        aspect-ratio: 1 / 1;
+    }
     .container { padding: 20px; }
+    .lotto-row { gap: 6px; padding: 8px; }
 }
