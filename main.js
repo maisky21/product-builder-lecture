@@ -151,6 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const allRowsBalls = [];
         try {
+            // 초기 구조 생성 단계도 단축
             for (let rowIdx = 0; rowIdx < 5; rowIdx++) {
                 const row = document.createElement('div');
                 row.classList.add('lotto-row');
@@ -161,22 +162,22 @@ document.addEventListener('DOMContentLoaded', () => {
                     const ball = createBall('?');
                     row.appendChild(ball);
                     balls.push(ball);
-                    await new Promise(resolve => setTimeout(resolve, 10)); // 초기 생성 속도 단축
+                    await new Promise(resolve => setTimeout(resolve, 5)); 
                     ball.classList.add('visible');
                 }
                 allRowsBalls.push({ balls, targetNumbers });
-                await new Promise(resolve => setTimeout(resolve, 50)); // 행 간 생성 속도 단축
             }
 
+            // 공개 단계 초고속화
             for (let rowIdx = 0; rowIdx < allRowsBalls.length; rowIdx++) {
                 const { balls, targetNumbers } = allRowsBalls[rowIdx];
                 for (let i = 0; i < balls.length; i++) {
                     const ball = balls[i];
                     ball.classList.add('spinning');
                     const start = Date.now();
-                    while (Date.now() - start < 300) { // 회전 시간 단축 (600ms -> 300ms)
+                    while (Date.now() - start < 150) { // 회전 시간 초단축 (300ms -> 150ms)
                         ball.textContent = Math.floor(Math.random() * 45) + 1;
-                        await new Promise(resolve => setTimeout(resolve, 40)); // 내부 회전 체감 속도 향상
+                        await new Promise(resolve => setTimeout(resolve, 20)); // 숫자 교체 속도 향상
                     }
                     ball.classList.remove('spinning');
                     ball.textContent = targetNumbers[i];
@@ -187,14 +188,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     ball.classList.add('shining');
                     
                     playPopSound();
-                    await new Promise(resolve => setTimeout(resolve, 50)); // 번호 간 공개 간격 단축
+                    await new Promise(resolve => setTimeout(resolve, 20)); // 번호 간 딜레이 최소화
                 }
                 if (rowIdx === allRowsBalls.length - 1) {
                     triggerConfetti();
                     showFortune();
                     playFinalSound();
                 }
-                await new Promise(resolve => setTimeout(resolve, 100)); // 행 간 공개 간격 단축
+                await new Promise(resolve => setTimeout(resolve, 50)); // 행 간 딜레이 최소화
             }
         } finally {
             stopSilentLoop();
