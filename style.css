@@ -240,10 +240,14 @@ header h1 {
 
 @media (max-width: 480px) {
     .ball {
-        width: 32px;
-        height: 32px;
-        min-width: 32px;
-        min-height: 32px;
-        font-size: 0.85rem;
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+        min-height: 36px;
+        font-size: 1rem;
+    }
+    .lotto-row {
+        gap: 6px;
+        padding: 8px;
     }
 }
