@@ -209,11 +209,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function applyBallColor(ball, number) {
         ball.className = 'ball visible'; // 초기화
-        if (number <= 10) ball.classList.add('yellow');
-        else if (number <= 20) ball.classList.add('blue');
-        else if (number <= 30) ball.classList.add('red');
-        else if (number <= 40) ball.classList.add('gray');
-        else ball.classList.add('green');
+        const colorIdx = Math.min(8, Math.floor((number - 1) / 5));
+        ball.classList.add(`c${colorIdx}`);
     }
 
     function triggerConfetti() {

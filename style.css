@@ -210,13 +210,15 @@ header h1 {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-weight: bold;
+    font-weight: 800;
     color: white;
     font-size: 0.95rem;
-    box-shadow: var(--ball-shadow);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1), inset 0 -2px 5px rgba(0,0,0,0.1);
     opacity: 0;
     transform: scale(0) translateY(20px);
     transition: opacity 0.4s, transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .ball.visible {
@@ -224,26 +226,16 @@ header h1 {
     transform: scale(1) translateY(0);
 }
 
-#share-btn {
-    width: 100%;
-    padding: 14px;
-    background: #66bb6a;
-    color: white;
-    border: none;
-    border-radius: 12px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s;
-    font-size: 1rem;
-}
-
-#share-btn.hidden { display: none; }
-
-.ball.yellow { background: linear-gradient(135deg, #fff9c4, #fbc02d); color: #7f6d00; }
-.ball.blue { background: linear-gradient(135deg, #e1f5fe, #0288d1); color: #ffffff; }
-.ball.red { background: linear-gradient(135deg, #ffecb3, #e64a19); color: #ffffff; }
-.ball.gray { background: linear-gradient(135deg, #f5f5f5, #616161); color: #ffffff; }
-.ball.green { background: linear-gradient(135deg, #f1f8e9, #689f38); color: #ffffff; }
+/* 9단계 프리미엄 다채로운 색상 */
+.ball.c0 { background: linear-gradient(135deg, #fff9c4 0%, #fbc02d 100%); color: #7f6d00; } /* 1-5: Gold */
+.ball.c1 { background: linear-gradient(135deg, #ffe0b2 0%, #fb8c00 100%); } /* 6-10: Orange */
+.ball.c2 { background: linear-gradient(135deg, #f8bbd0 0%, #d81b60 100%); } /* 11-15: Pink */
+.ball.c3 { background: linear-gradient(135deg, #e1bee7 0%, #8e24aa 100%); } /* 16-20: Purple */
+.ball.c4 { background: linear-gradient(135deg, #bbdefb 0%, #1e88e5 100%); } /* 21-25: Blue */
+.ball.c5 { background: linear-gradient(135deg, #b2ebf2 0%, #00acc1 100%); } /* 26-30: Cyan */
+.ball.c6 { background: linear-gradient(135deg, #c8e6c9 0%, #43a047 100%); } /* 31-35: Green */
+.ball.c7 { background: linear-gradient(135deg, #d7ccc8 0%, #6d4c41 100%); } /* 36-40: Brown */
+.ball.c8 { background: linear-gradient(135deg, #cfd8dc 0%, #546e7a 100%); } /* 41-45: Gray */
 
 @media (max-width: 480px) {
     .ball {
