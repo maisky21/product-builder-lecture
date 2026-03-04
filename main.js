@@ -161,11 +161,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     const ball = createBall('?');
                     row.appendChild(ball);
                     balls.push(ball);
-                    await new Promise(resolve => setTimeout(resolve, 30));
+                    await new Promise(resolve => setTimeout(resolve, 10)); // 초기 생성 속도 단축
                     ball.classList.add('visible');
                 }
                 allRowsBalls.push({ balls, targetNumbers });
-                await new Promise(resolve => setTimeout(resolve, 100));
+                await new Promise(resolve => setTimeout(resolve, 50)); // 행 간 생성 속도 단축
             }
 
             for (let rowIdx = 0; rowIdx < allRowsBalls.length; rowIdx++) {
@@ -174,28 +174,27 @@ document.addEventListener('DOMContentLoaded', () => {
                     const ball = balls[i];
                     ball.classList.add('spinning');
                     const start = Date.now();
-                    while (Date.now() - start < 600) {
+                    while (Date.now() - start < 300) { // 회전 시간 단축 (600ms -> 300ms)
                         ball.textContent = Math.floor(Math.random() * 45) + 1;
-                        await new Promise(resolve => setTimeout(resolve, 50));
+                        await new Promise(resolve => setTimeout(resolve, 40)); // 내부 회전 체감 속도 향상
                     }
                     ball.classList.remove('spinning');
                     ball.textContent = targetNumbers[i];
                     applyBallColor(ball, targetNumbers[i]);
                     
-                    // 반짝임 효과 트리거
                     ball.classList.remove('shining');
-                    void ball.offsetWidth; // 리플로우 강제
+                    void ball.offsetWidth; 
                     ball.classList.add('shining');
                     
                     playPopSound();
-                    await new Promise(resolve => setTimeout(resolve, 100));
+                    await new Promise(resolve => setTimeout(resolve, 50)); // 번호 간 공개 간격 단축
                 }
                 if (rowIdx === allRowsBalls.length - 1) {
                     triggerConfetti();
                     showFortune();
                     playFinalSound();
                 }
-                await new Promise(resolve => setTimeout(resolve, 200));
+                await new Promise(resolve => setTimeout(resolve, 100)); // 행 간 공개 간격 단축
             }
         } finally {
             stopSilentLoop();
