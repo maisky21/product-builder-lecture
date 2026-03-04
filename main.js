@@ -151,7 +151,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const allRowsBalls = [];
         try {
-            // 초기 구조 생성 단계도 단축
             for (let rowIdx = 0; rowIdx < 5; rowIdx++) {
                 const row = document.createElement('div');
                 row.classList.add('lotto-row');
@@ -168,34 +167,36 @@ document.addEventListener('DOMContentLoaded', () => {
                 allRowsBalls.push({ balls, targetNumbers });
             }
 
-            // 공개 단계 초고속화
             for (let rowIdx = 0; rowIdx < allRowsBalls.length; rowIdx++) {
                 const { balls, targetNumbers } = allRowsBalls[rowIdx];
                 for (let i = 0; i < balls.length; i++) {
                     const ball = balls[i];
                     ball.classList.add('spinning');
                     const start = Date.now();
-                    while (Date.now() - start < 150) { // 회전 시간 초단축 (300ms -> 150ms)
+                    while (Date.now() - start < 150) { 
                         ball.textContent = Math.floor(Math.random() * 45) + 1;
-                        await new Promise(resolve => setTimeout(resolve, 20)); // 숫자 교체 속도 향상
+                        await new Promise(resolve => setTimeout(resolve, 20)); 
                     }
                     ball.classList.remove('spinning');
-                    ball.textContent = targetNumbers[i];
-                    applyBallColor(ball, targetNumbers[i]);
+                    const finalNum = targetNumbers[i];
+                    ball.textContent = finalNum;
+                    
+                    // 색상 적용 함수 호출 (강력하게 적용)
+                    applyBallColor(ball, finalNum);
                     
                     ball.classList.remove('shining');
                     void ball.offsetWidth; 
                     ball.classList.add('shining');
                     
                     playPopSound();
-                    await new Promise(resolve => setTimeout(resolve, 20)); // 번호 간 딜레이 최소화
+                    await new Promise(resolve => setTimeout(resolve, 20)); 
                 }
                 if (rowIdx === allRowsBalls.length - 1) {
                     triggerConfetti();
                     showFortune();
                     playFinalSound();
                 }
-                await new Promise(resolve => setTimeout(resolve, 50)); // 행 간 딜레이 최소화
+                await new Promise(resolve => setTimeout(resolve, 50)); 
             }
         } finally {
             stopSilentLoop();
@@ -219,6 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function applyBallColor(ball, number) {
         const colorIdx = Math.min(8, Math.floor((number - 1) / 5));
+        // 기존 클래스 유지하면서 색상 클래스 강제 교체
         ball.className = `ball visible c${colorIdx}`;
     }
 
