@@ -64,6 +64,7 @@ body {
     z-index: 10;
     backdrop-filter: blur(25px);
     height: fit-content;
+    margin: 20px 0;
 }
 
 header {
@@ -137,7 +138,6 @@ header h1 {
     border: none !important;
     position: relative;
     background-image: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.4) 0%, transparent 60%);
-    /* 모든 상황에서 숫자가 보이도록 미세한 텍스트 그림자 추가 */
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
@@ -149,7 +149,6 @@ header h1 {
 
 .ball.visible { opacity: 1; transform: scale(1); }
 
-/* 반짝임 효과 - 숫자를 가리지 않도록 조정 */
 .ball.shining::after {
     content: '✦';
     position: absolute;
@@ -170,18 +169,16 @@ header h1 {
     100% { transform: translate(-50%, -50%) scale(1.3) rotate(45deg); opacity: 0; }
 }
 
-/* 9단계 프리미엄 색상 - 명도 및 가시성 보정 */
-.ball.c0 { background-color: #ffca28; --glow-color: rgba(255, 202, 40, 0.6); color: #4a148c; } /* Gold - 진하게 */
-.ball.c1 { background-color: #ff7043; --glow-color: rgba(255, 112, 67, 0.6); } /* Orange */
-.ball.c2 { background-color: #ec407a; --glow-color: rgba(236, 64, 122, 0.6); } /* Pink */
-.ball.c3 { background-color: #7e57c2; --glow-color: rgba(126, 87, 194, 0.6); } /* Purple */
-.ball.c4 { background-color: #42a5f5; --glow-color: rgba(66, 165, 245, 0.6); } /* Blue */
-.ball.c5 { background-color: #26c6da; --glow-color: rgba(38, 198, 218, 0.6); color: #004d40; } /* Cyan */
-.ball.c6 { background-color: #66bb6a; --glow-color: rgba(102, 187, 106, 0.6); } /* Green */
-.ball.c7 { background-color: #ffa726; --glow-color: rgba(255, 167, 38, 0.6); color: #ad1457; } /* Sunset */
-.ball.c8 { background-color: #78909c; --glow-color: rgba(120, 144, 156, 0.6); } /* Slate */
+.ball.c0 { background-color: #ffca28; --glow-color: rgba(255, 202, 40, 0.6); color: #4a148c; }
+.ball.c1 { background-color: #ff7043; --glow-color: rgba(255, 112, 67, 0.6); }
+.ball.c2 { background-color: #ec407a; --glow-color: rgba(236, 64, 122, 0.6); }
+.ball.c3 { background-color: #7e57c2; --glow-color: rgba(126, 87, 194, 0.6); }
+.ball.c4 { background-color: #42a5f5; --glow-color: rgba(66, 165, 245, 0.6); }
+.ball.c5 { background-color: #26c6da; --glow-color: rgba(38, 198, 218, 0.6); color: #004d40; }
+.ball.c6 { background-color: #66bb6a; --glow-color: rgba(102, 187, 106, 0.6); }
+.ball.c7 { background-color: #ffa726; --glow-color: rgba(255, 167, 38, 0.6); color: #ad1457; }
+.ball.c8 { background-color: #78909c; --glow-color: rgba(120, 144, 156, 0.6); }
 
-/* 대기 중인 빈 공 (물음표 상태) - 하얀색 방지 */
 .ball:not(.visible), .ball[text="?"] {
     background-color: #eee;
     color: #999;
@@ -189,7 +186,7 @@ header h1 {
 
 #fortune-container {
     margin-top: 15px; padding: 15px; border-radius: 18px;
-    background: rgba(255, 249, 196, 0.4); border: 1px solid rgba(255, 215, 0, 0.3);
+    background: rgba(255, 249, 196, 0.4); border: 1.5px solid rgba(255, 215, 0, 0.3);
     animation: slideUp 0.6s ease-out forwards;
 }
 
@@ -206,7 +203,7 @@ header h1 {
 
 #share-btn {
     display: flex; align-items: center; justify-content: center;
-    margin: 10px auto 0; padding: 10px 25px;
+    margin: 10px auto 25px; padding: 10px 25px;
     background: linear-gradient(135deg, #66bb6a 0%, #43a047 100%);
     color: white; border: none; border-radius: 50px;
     font-weight: 700; cursor: pointer; transition: all 0.3s;
@@ -215,10 +212,43 @@ header h1 {
     font-size: 0.95rem;
 }
 
+/* 정보성 섹션 스타일 */
+.info-section {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    text-align: left;
+}
+
+[data-theme="dark"] .info-section {
+    border-top-color: rgba(255, 255, 255, 0.05);
+}
+
+.info-block h4 {
+    font-size: 0.95rem;
+    font-weight: 800;
+    margin-bottom: 8px;
+    color: var(--header-text);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.info-block p {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--text-color);
+    opacity: 0.8;
+}
+
 @media (max-width: 480px) {
     header h1 { font-size: 1.25rem; }
     .ball { width: 36px; height: 36px; min-width: 36px; min-height: 36px; font-size: 0.95rem; aspect-ratio: 1/1; flex-shrink: 0;}
     .container { padding: 15px; }
     .lotto-row { gap: 4px; padding: 6px; }
     #capture-area { padding: 15px; }
+    .info-section { margin-top: 20px; }
 }
