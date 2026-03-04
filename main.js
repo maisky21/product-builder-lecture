@@ -203,7 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const ball = document.createElement('div');
         ball.classList.add('ball');
         ball.textContent = text;
-        ball.style.background = 'linear-gradient(135deg, #e0e0e0, #bdbdbd)';
+        // 인라인 스타일 배경 제거 (CSS 클래스가 적용되도록 함)
         return ball;
     }
 
