@@ -279,10 +279,10 @@ header h1::before {
 
 /* New Color Palette */
 .ball.c0 { background-color: #ffc84a; --glow-color: #ffc84a; color: #734c00; } /* Yellow */
-.ball.c1 { background-color: #24bdef; --glow-color: #24bdef; } /* Blue */
-.ball.c2 { background-color: #ff7657; --glow-color: #ff7657; } /* Red/Orange */
+.ball.c1 { background-color: #24bdef; --glow-color: #24bdef; color: #ffffff; } /* Blue */
+.ball.c2 { background-color: #ff7657; --glow-color: #ff7657; color: #6e2a19; } /* Red/Orange */
 .ball.c3 { background-color: #aebac9; --glow-color: #aebac9; color: #434c57;} /* Grey */
-.ball.c4 { background-color: #6edb7f; --glow-color: #6edb7f; color: #004d1f;} /* Green */
+.ball.c4 { background-color: #6edb7f; --glow-color: #6edb7f; color: #004214;} /* Green */
 
 #fortune-container {
     margin-top: 15px;
