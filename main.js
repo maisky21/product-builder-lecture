@@ -12,6 +12,17 @@ document.addEventListener('DOMContentLoaded', () => {
     let audioCtx = null;
     let silentNode = null;
 
+    const softColors = [
+        { bg: 'linear-gradient(45deg, #fce4ec, #f8bbd0)', shadow: 'rgba(240, 98, 146, 0.3)', text: '#ad1457' }, // Pink
+        { bg: 'linear-gradient(45deg, #e1f5fe, #b3e5fc)', shadow: 'rgba(3, 169, 244, 0.3)', text: '#0277bd' },  // Blue
+        { bg: 'linear-gradient(45deg, #e8f5e9, #c8e6c9)', shadow: 'rgba(76, 175, 80, 0.3)', text: '#2e7d32' },  // Green
+        { bg: 'linear-gradient(45deg, #f3e5f5, #e1bee7)', shadow: 'rgba(156, 39, 176, 0.3)', text: '#6a1b9a' }, // Purple
+        { bg: 'linear-gradient(45deg, #fffde7, #fff9c4)', shadow: 'rgba(251, 192, 45, 0.3)', text: '#f57f17' }, // Yellow
+        { bg: 'linear-gradient(45deg, #f0f4c3, #e6ee9c)', shadow: 'rgba(175, 180, 43, 0.3)', text: '#827717' }, // Lime
+        { bg: 'linear-gradient(45deg, #ffe0b2, #ffcc80)', shadow: 'rgba(255, 152, 0, 0.3)', text: '#e65100' },  // Orange
+        { bg: 'linear-gradient(45deg, #ffd700, #ffecb3)', shadow: 'rgba(255, 215, 0, 0.4)', text: '#4a148c' }   // Original Gold
+    ];
+
     const fortunes = [
         "오늘은 금전운이 최고조입니다! 망설이지 마세요.",
         "예상치 못한 곳에서 행운이 찾아올 것입니다.",
@@ -34,10 +45,20 @@ document.addEventListener('DOMContentLoaded', () => {
     themeToggle.addEventListener('click', toggleTheme);
     generateBtn.addEventListener('click', () => {
         initAudio(); 
-        startSilentLoop(); // iOS Safari 권한 유지를 위한 루프 시작
+        startSilentLoop();
+        changeBtnColor(); // 클릭할 때마다 색상 변경
         generateLottoSets();
     });
     shareBtn.addEventListener('click', captureAndShare);
+
+    // 버튼 색상 무작위 변경
+    function changeBtnColor() {
+        const color = softColors[Math.floor(Math.random() * softColors.length)];
+        generateBtn.style.background = color.bg;
+        generateBtn.style.backgroundSize = '200% auto';
+        generateBtn.style.boxShadow = `0 6px 20px ${color.shadow}`;
+        generateBtn.style.color = color.text;
+    }
 
     // --- 배경 아이콘 생성 ---
     function createFloatingIcons() {

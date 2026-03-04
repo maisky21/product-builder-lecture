@@ -129,10 +129,9 @@ header h1 {
 }
 
 #generate-btn:disabled {
-    animation: none;
-    background: #ccc;
+    animation: pulse 1.5s infinite; /* 애니메이션 유지 */
+    opacity: 0.6;
     cursor: not-allowed;
-    box-shadow: none;
 }
 
 @keyframes pulse {
