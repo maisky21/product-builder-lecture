@@ -237,6 +237,37 @@ header h1 {
 .ball.c7 { background: linear-gradient(135deg, #F6D365 0%, #FDA085 100%); } /* 36-40: Sunset */
 .ball.c8 { background: linear-gradient(135deg, #E0C3FC 0%, #8EC5FC 100%); } /* 41-45: Cosmic */
 
+#share-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px auto 20px;
+    padding: 12px 28px;
+    background: linear-gradient(135deg, #66bb6a 0%, #43a047 100%);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    font-size: 1rem;
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+    width: fit-content;
+    gap: 8px;
+}
+
+#share-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4);
+    background: linear-gradient(135deg, #81c784 0%, #4caf50 100%);
+}
+
+#share-btn:active {
+    transform: translateY(-1px);
+}
+
+#share-btn.hidden { display: none; }
+
 @media (max-width: 480px) {
     .ball {
         width: 36px;
