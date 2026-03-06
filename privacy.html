@@ -6,71 +6,195 @@
     <title>개인정보처리방침 | 오늘의 운세 로또 번호 생성기</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        .privacy-container {
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 40px;
-            background: var(--container-bg);
-            border-radius: 28px;
-            box-shadow: var(--shadow);
+        :root {
+            --privacy-bg: #fdfbfb;
+            --divider-color: #eeeaf5;
+            --accent-soft: #9b6ccf;
+        }
+
+        body {
+            background-color: var(--privacy-bg);
             line-height: 1.8;
-            color: var(--text-color);
+            color: #555;
+            padding: 40px 20px;
+            display: block; /* 부모 flex 해제 */
         }
-        h1 { font-size: 1.8rem; margin-bottom: 30px; color: var(--header-text); border-bottom: 2px solid var(--header-text); padding-bottom: 10px; }
-        h2 { font-size: 1.3rem; margin-top: 30px; margin-bottom: 15px; color: var(--header-text); }
-        p, li { font-size: 0.95rem; margin-bottom: 10px; opacity: 0.9; }
-        ul { margin-left: 20px; margin-bottom: 20px; }
-        .contact-box {
-            background: rgba(0, 0, 0, 0.03);
-            padding: 20px;
-            border-radius: 12px;
-            margin-top: 30px;
-            border-left: 4px solid var(--header-text);
+
+        .privacy-wrapper {
+            max-width: 720px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 60px 50px;
+            border-radius: 32px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
         }
-        [data-theme="dark"] .contact-box { background: rgba(255, 255, 255, 0.05); }
-        .back-link { display: inline-block; margin-bottom: 20px; text-decoration: none; color: var(--header-text); font-weight: bold; }
+
+        [data-theme="dark"] .privacy-wrapper {
+            background: #1a102e;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .back-home {
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 40px;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+
+        .back-home:hover {
+            color: var(--accent-soft);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--header-text);
+            margin-bottom: 15px;
+            letter-spacing: -1px;
+        }
+
+        .title-divider {
+            height: 6px;
+            width: 60px;
+            background-color: var(--divider-color);
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #777;
+            margin-bottom: 50px;
+            font-weight: 500;
+        }
+
+        section {
+            margin-bottom: 50px; /* 섹션 사이 여백 확대 */
+        }
+
+        h2 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--header-text);
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 18px;
+            background: var(--divider-color);
+            border-radius: 4px;
+        }
+
+        p, li {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 12px;
+            word-break: keep-all;
+        }
+
+        [data-theme="dark"] p, [data-theme="dark"] li, [data-theme="dark"] .subtitle {
+            color: #aaa;
+        }
+
+        ul {
+            padding-left: 20px;
+            list-style-type: none;
+        }
+
+        ul li::before {
+            content: "•";
+            color: var(--accent-soft);
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+        }
+
+        .contact-card {
+            background: #f9f7fc;
+            padding: 25px;
+            border-radius: 20px;
+            margin-top: 20px;
+            border: 1px solid #f0edf7;
+        }
+
+        [data-theme="dark"] .contact-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .footer-simple {
+            margin-top: 80px;
+            text-align: center;
+            font-size: 11px;
+            color: #bbb;
+            letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 600px) {
+            .privacy-wrapper { padding: 40px 25px; }
+            h1 { font-size: 1.8rem; }
+        }
     </style>
 </head>
 <body>
-    <div class="privacy-container">
-        <a href="index.html" class="back-link">← 돌아가기</a>
-        <h1>개인정보처리방침</h1>
+    <div class="privacy-wrapper">
+        <a href="index.html" class="back-home">← 홈으로 돌아가기</a>
         
-        <p>본 서비스('오늘의 운세: 로또 번호 생성기')는 이용자의 개인정보 보호를 중요시하며, 관련 법령을 준수합니다. 본 방침을 통해 귀하의 데이터가 어떻게 관리되는지 투명하게 안내드립니다.</p>
+        <h1>개인정보처리방침</h1>
+        <div class="title-divider"></div>
+        <p class="subtitle">여러분의 소중한 정보를 보호하기 위해 최선을 다합니다.</p>
+        
+        <section>
+            <h2>1. 데이터 수집 및 노력</h2>
+            <p>우리는 여러분이 우리 서비스를 이용하며 남기는 발자취를 소중히 여기고 있습니다. 더 나은 경험을 드리기 위해 다음과 같은 최소한의 비식별 데이터를 안전하게 살펴보고 노력하고 있습니다.</p>
+            <ul>
+                <li>방문하신 시간과 접속하신 지역의 IP 주소</li>
+                <li>사용하시는 기기의 종류와 브라우저 환경</li>
+                <li>서비스 내에서 생성된 번호들에 대한 익명 통계</li>
+            </ul>
+        </section>
 
-        <h2>1. 데이터 수집 및 로그 분석</h2>
-        <p>본 서비스는 시스템 운영 최적화 및 보안 강화를 위해 다음과 같은 비식별 정보를 자동으로 수집할 수 있습니다.</p>
-        <ul>
-            <li>방문 일시 및 접속 IP 주소</li>
-            <li>브라우저 종류 및 운영체제(OS)</li>
-            <li>서비스 이용 기록 (생성된 번호 통계 등)</li>
-        </ul>
+        <section>
+            <h2>2. 쿠키와 마음을 담은 환경 설정</h2>
+            <p>우리는 여러분이 선택하신 테마(다크모드 등)를 기억해 두었다가 다음 방문 때도 편안하게 맞이하기 위해 '쿠키'라는 작은 조각을 사용합니다.</p>
+            <ul>
+                <li>브라우저 설정을 통해 언제든 쿠키를 거절하실 수 있습니다. 다만, 이 경우 정성껏 준비한 개인화된 기능이 조금 불편해질 수도 있는 점 양해 부탁드립니다.</li>
+            </ul>
+        </section>
 
-        <h2>2. 쿠키(Cookie)의 사용 및 거부</h2>
-        <p>본 서비스는 이용자의 설정(예: 다크모드 테마)을 기억하고 서비스 환경을 개선하기 위해 '쿠키'를 사용합니다. 쿠키는 웹사이트가 귀하의 브라우저에 전송하는 작은 텍스트 파일입니다.</p>
-        <ul>
-            <li><strong>거부 방법:</strong> 이용자는 브라우저 설정을 통해 쿠키 저장을 거부하거나 삭제할 수 있습니다. 다만, 쿠키 기능을 해제할 경우 서비스의 일부 개인화 기능 이용이 제한될 수 있습니다.</li>
-        </ul>
+        <section>
+            <h2>3. 투명한 광고 운영 안내</h2>
+            <p>지속적이고 안정적인 서비스 운영을 위해 Google AdSense 광고를 조심스럽게 게재하고 있습니다.</p>
+            <ul>
+                <li>Google은 쿠키를 활용해 여러분의 관심사에 꼭 맞는 광고를 보여드리기 위해 노력하고 있습니다.</li>
+                <li>원치 않으실 경우 언제든 Google의 <a href="https://www.google.com/settings/ads" target="_blank" style="color: var(--accent-soft);">광고 설정</a>에서 맞춤 광고를 끄실 수 있습니다.</li>
+            </ul> section>
 
-        <h2>3. Google AdSense 및 맞춤 광고 고지</h2>
-        <p>본 서비스는 수익 창출 및 서비스 유지를 위해 Google AdSense 광고를 게재합니다.</p>
-        <ul>
-            <li>Google을 포함한 제3자 제공업체는 사용자의 이전 방문 기록을 바탕으로 맞춤형 광고를 게재하기 위해 쿠키를 사용합니다.</li>
-            <li>Google의 광고 쿠키 사용을 통해 Google과 파트너사는 본 서비스 또는 다른 사이트 방문 기록을 토대로 사용자에게 적합한 광고를 제공할 수 있습니다.</li>
-            <li>사용자는 <a href="https://www.google.com/settings/ads" target="_blank">광고 설정</a>에서 맞춤 광고 게재를 중단할 수 있습니다.</li>
-        </ul>
+        <section>
+            <h2>4. 따뜻한 문의와 답변</h2>
+            <p>서비스를 이용하시다가 궁금한 점이나 의견이 생기시면 언제든 편하게 말씀해 주세요. 정성을 다해 답변해 드리겠습니다.</p>
+            <div class="contact-card">
+                <strong>책임자:</strong> VibecodingJ<br>
+                <strong>이메일:</strong> <a href="mailto:vibecodingj@gmail.com" style="color: var(--accent-soft); text-decoration: none;">vibecodingj@gmail.com</a>
+            </div>
+        </section>
 
-        <h2>4. 데이터 보안 및 전문가의 설계</h2>
-        <p>본 서비스는 20년 경력의 IT 전문가가 설계한 보안 프레임워크를 기반으로 운영됩니다. 수집된 최소한의 로그 데이터는 암호화된 환경에서 관리되며, 외부에 유출되거나 판매되지 않습니다.</p>
+        <p style="margin-top: 60px; font-size: 0.8rem; color: #ccc; text-align: center;">마지막으로 내용을 다듬은 날: 2026년 3월 6일</p>
+    </div>
 
-        <h2>5. 개인정보보호 책임자 및 문의</h2>
-        <p>서비스 이용 중 발생하는 개인정보 관련 문의사항은 아래 연락처를 통해 신속하게 답변받으실 수 있습니다.</p>
-        <div class="contact-box">
-            <strong>담당자:</strong> VibecodingJ<br>
-            <strong>문의처:</strong> <a href="mailto:vibecodingj@gmail.com">vibecodingj@gmail.com</a>
-        </div>
-
-        <p style="margin-top: 40px; font-size: 0.8rem; opacity: 0.6;">최종 수정일: 2026년 3월 6일</p>
+    <div class="footer-simple">
+        © 2026 VibecodingJ | 개인정보처리방침
     </div>
 
     <script>
