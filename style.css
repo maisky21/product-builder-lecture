@@ -252,3 +252,22 @@ header h1 {
     #capture-area { padding: 15px; }
     .info-section { margin-top: 20px; }
 }
+
+footer {
+    margin-top: 40px;
+    padding-bottom: 20px;
+    text-align: center;
+    font-size: 11px;
+    color: #888;
+    opacity: 0.8;
+}
+
+footer a {
+    color: #888;
+    text-decoration: none;
+    margin-left: 10px;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
